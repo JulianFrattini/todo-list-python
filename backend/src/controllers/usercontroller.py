@@ -1,7 +1,8 @@
 from src.controllers.controller import Controller
 from src.util.dao import DAO
-
+import pytest
 import re
+
 emailValidator = re.compile(r'.*@.*')
 
 class UserController(Controller):
@@ -37,7 +38,7 @@ class UserController(Controller):
                 return users[0]
         except Exception as e:
             raise
-
+    #@pytest.mark.skip(reason="no way of currently testing this")
     def update(self, id, data):
         try:
             update_result = super().update(id=id, data={'$set': data})
