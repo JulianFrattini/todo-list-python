@@ -22,6 +22,15 @@ class TestUserController:
         user_result = sut.get_user_by_email(email = email)
         assert user_result == { 'email': email }
 
+    def test_get_user_valid_registered_multiple(self):
+        """_summary_
+        """
+        email = "an@email.com"
+        mock_dao = mock.MagicMock()
+        mock_dao.find.return_value = [ {'email': email }, {'email': email } ]
+        sut = UserController(dao = mock_dao)
+        user_result = sut.get_user_by_email(email = email)
+        assert user_result == { 'email': email }
 
     def test_get_user_invalid_email_no_dot_no_at(self):
         """s
