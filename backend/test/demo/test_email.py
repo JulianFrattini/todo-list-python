@@ -77,7 +77,7 @@ def test_with_two_same_email(mock_print):
     # This test if the print displays in usercontroller
     mock_print.assert_called_with('Error: more than one user found with mail test@gmail.com')
 
-def test_missing_dot_after_domain():
+def test_missing_dot_before_domain():
     """
     Test if get_user_by_email function raises an exception when no dot is sent
     """
