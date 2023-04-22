@@ -49,3 +49,12 @@ def test_get_user_by_email_None():
     result = sut.get_user_by_email(email)
     assert result == None
 
+@pytest.mark.unit
+def test_get_user_by_email_raise_exception():
+    mockedUsercontroller = mock.MagicMock()
+    mockedUsercontroller.find.side_effect = Exception("Database operation fails.")
+    email = "test@test.com"
+    sut = UserController(dao=mockedUsercontroller)
+    with pytest.raises(Exception) as exc_info:
+        sut.get_user_by_email(email)
+    assert str(exc_info.value) == "Database operation fails."
