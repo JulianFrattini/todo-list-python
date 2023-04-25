@@ -1,72 +1,62 @@
 import pytest
 from unittest.mock import patch
-import pymongo
+from pymongo.errors import ServerSelectionTimeoutError
 import unittest.mock as mock
 from src.util.dao import DAO
 
 json_validator = {
     "$jsonSchema": {
         "bsonType": "object",
-        "required": ["test_name","test_bitcoins", "test_games", "test_fake_or_not"],
+        "required": ["test_name","test_studying"],
         "properties": {
-            "test_name": { # Test string and unique (validator)
+            "test_name": { # (Name of the person) Test string and unique (validator)
                 "bsonType": "string",
                 "uniqueItems": True
             },
-            "test_bitcoins": { # Test int (validator)
-                "bsonType": "int"
-            },
-            "test_games": { # Test array (validator)
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "string"
-                }
-            },
-            "test_fake_or_not": { # Test boolean (validator)
+            "test_studying": { # (If you are studying or not) - Test boolean (validator)
                 "bsonType": "bool",
             }
         }
     }
 }
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 @patch("src.util.dao.getValidator")
 def daoSetUp(mock_get_validator):
-    mock_get_validator.return_value = json_validator
-    dao = DAO("test")
+    mock_get_validator.return_value = json_validator # Creates own validator for integration_test collection
+    dao = DAO("integration_test") # Create collection if not already exists
+    dao.drop() # Drop the collection to be sure to remove everything (Yiled not working)
+    dao = DAO("integration_test") # Create collection again if not already exists
     return dao
 
 @pytest.mark.integration
-@pytest.mark.parametrize("test_valid_data", [({"test_name": "Juelian", "test_bitcoins": 69,"test_games": ["Game1", "Game2"], "test_fake_or_not":True})])
-def test_create_valid_data(daoSetUp, test_valid_data):
-    """Document with valid data"""
+@pytest.mark.parametrize("test_valid_data", [({ "test_name": "Kasper", "test_studying": True })])
+def test_create_with_valid_data(daoSetUp, test_valid_data):
+    """ Test create document with valid data to see if it creates in mongodb """
     validation_result = daoSetUp.create(test_valid_data)
-    print(validation_result)
     assert validation_result is not None
 
+@pytest.mark.integration
+@pytest.mark.parametrize("invalid_data", [({ "test_name": 2, "test_studying": "hej" })])
+def test_create_with_invalid_data(daoSetUp, invalid_data):
+    """ Test create document with invalid data to see if it raises a exception and it hasen't created any document in mongodb """
+    with pytest.raises(Exception):
+        daoSetUp.create(invalid_data)
+
+@pytest.mark.integration
+def test_create_unique_id(daoSetUp):
+    """ Test create document and look for if it's unique id on both users """
+    daoSetUp.create({ "test_name": "Majd", "test_studying": True })
+    daoSetUp.create({ "test_name": "Kasper", "test_studying": True })
+    users = daoSetUp.find()
+
+    assert users[0]["_id"] != users[1]["_id"]
 
 # @pytest.mark.integration
-# @pytest.mark.parametrize("invalid_data", [({"test_name": "hej", "test_bitcoins": "-25"}), ({"test_name": "", "test_bitcoins": "25"}), ({"test_bitcoins": "25"})])
-# def test_create_invalid_data(daoSetUp, invalid_data):
-#     """Document with invalid data """
-#     with pytest.raises(Exception):
-#         daoSetUp.create(invalid_data)
-
-
-# @pytest.mark.integration
-# @pytest.mark.parametrize("test_data", [({"test_name": "Julian", "test_bitcoins": 69}), ({"test_name": "Eriks", "test_bitcoins": 79})])
-# def test_create_unique_id(daoSetUp,test_data):
-#     """Test create document with unique id"""
-#     created_document = daoSetUp.create(test_data)
-#     assert created_document is not None
-#     assert created_document["_id"] is not None
-    
-# @pytest.mark.integration
-# @pytest.mark.parametrize("test_data", [({"test_name": "Julian", "test_bitcoins": 69,"test_games": ["Game1", "Game2"], "test_fake_or_not":True})])
-# def test_create_no_valid_db(daoSetUp, test_data):
-#     """test no valid database connection """
+# def test_create_no_valid_db():
+#     """ Test to set up dao when no valid database connection """
 #     with patch("pymongo.MongoClient") as mock_client:
-#          mock_client.side_effect = Exception("något gick snett brorsan")
-
-#          with pytest.raises(Exception):
-#              daoSetUp.create(test_data)
+#         mock_client.side_effect = Exception()
+        
+#         with pytest.raises(Exception):
+#             DAO("test")

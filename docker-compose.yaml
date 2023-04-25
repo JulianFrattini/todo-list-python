@@ -16,7 +16,6 @@ services:
     container_name: edutask-backend
     volumes:
       - "./backend/test:/app/test"
-      - "./backend/.env:/app/.env"
     depends_on:
       - mongodb
     environment:
