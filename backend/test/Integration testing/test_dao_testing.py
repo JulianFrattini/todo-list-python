@@ -25,10 +25,14 @@ def daoSetUp(mock_get_validator):
     """  Mock the getValidator function, clear and set up DAO with collection integration_test """
     mock_get_validator.return_value = json_validator # Creates own validator for integration_test collection
     dao = DAO("integration_test") # Create collection if not already exists
-    dao.drop() # Drop the collection to be sure to remove everything (Yiled not working)
-    dao = DAO("integration_test") # Create collection again if not already exists
 
     return dao
+
+@pytest.fixture(autouse=True)
+def daoTearDown(daoSetUp):
+    """ Drop the collection after each test is executed """
+    yield
+    daoSetUp.drop()
 
 @pytest.mark.integration
 @pytest.mark.parametrize("test_valid_data", [({ "test_name": "Kasper", "test_studying": True })])
@@ -43,7 +47,7 @@ def test_create_with_valid_data(daoSetUp, test_valid_data):
 @pytest.mark.integration
 @pytest.mark.parametrize("invalid_data", [({ "test_name": 2, "test_studying": "hej" })])
 def test_create_with_invalid_data(daoSetUp, invalid_data):
-    """ Test create function with invalid data to see if it raises a exception and it hasen't created any document in mongodb """
+    """ Test create function with invalid data to see if it raises an exception and it hasn't created any document in MongoDB """
     with pytest.raises(Exception):
         daoSetUp.create(invalid_data)
 
