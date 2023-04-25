@@ -1,52 +1,78 @@
-import os
-import pytest
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 import unittest.mock as mock
+import pytest
+import pymongo.errors
+import sys
 from src.util.dao import DAO
-from pymongo import MongoClient
-from dotenv import dotenv_values
 
-@pytest.fixture(scope='session')
-def mongo_client():
-    LOCAL_MONGO_URL = dotenv_values('.env').get('MONGO_URL')
-    MONGO_URL = os.environ.get('MONGO_URL', LOCAL_MONGO_URL)
-    client = MongoClient(MONGO_URL)
-    yield client
-    client.drop_database('edutask_test')
-    client.close()
 
-@pytest.fixture(scope='session')
-def mongo_db(mongo_client):
-    db = mongo_client.edutask_test
-    yield db
-    db.drop_collection('test_collection')
+@pytest.fixture
+def sut():
+    with patch('src.util.dao.getValidator', autospec=True) as mock_get_validator:
+        #mock_get_validator = mock.MagicMock()
+        # Set the return value of the mocked getValidator function
+        validator = {
+            "$jsonSchema": {
+                "bsonType": "object",
+                "required": ["description"],
+                "properties": {
+                    "description": {
+                        "bsonType": "string",
+                        "description": "the description of a todo must be determined",
+                        "uniqueItems": True
+                    },
+                    "done": {
+                        "bsonType": "bool"
+                    }
+                }
+            }
+        }
 
-@pytest.fixture(scope="module")
-def dao(mongo_db):
-    with patch('src.util.dao.getValidator') as mock_getValidator:
-        mock_getValidator.return_value = {"$jsonSchema": {"bsonType": "object"}}
-        collection_name = 'test_collection'
-        dao = DAO(collection_name, mongo_db)
-        yield dao
+        #mock_get_validator.getValidator.return_value = validator
+        mock_get_validator.return_value = validator
 
-def test_create_successful(dao):
-    data = {'name': 'John Doe', 'age': 30, 'is_active': True}
-    obj = dao.create(data)
-    assert '_id' in obj
+        # Create and return the DAO object
+        name = "test_todo"
+        sut = DAO(collection_name=name)
+        yield sut
+        sut.drop()
 
-def test_create_noncompliant_data(dao):
-    data = {'name': 'John Doe', 'age': 'thirty', 'is_active': True}
-    with pytest.raises(WriteError):
-        dao.create(data)
+# All flags are valid
+@pytest.mark.integration
+def test_create_1(sut):
+    task = {"description":"test task one.", "done": False}
+    result = sut.create(task)
+    assert result['description'] == "test task one."
+    assert result['done'] == False
 
-def test_create_invalid_bson_data_type(dao):
-    data = {'name': {'first': 'John', 'last': 'Doe'}, 'age': 30, 'is_active': True}
-    with pytest.raises(WriteError):
-        dao.create(data)
+# The unique flag is violated
+@pytest.mark.integration
+def test_create_2(sut):
+    task = {"description":"test task one.", "done": True}
+    task2 = {"description":"test task one.", "done": True}
+    sut.create(task)
 
-def test_create_unique_items_constraint(dao):
-    data1 = {'name': 'John Doe', 'hobbies': ['reading', 'swimming']}
-    data2 = {'name': 'Jane Doe', 'hobbies': ['swimming']}
-    dao.create(data1)
-    with pytest.raises(WriteError):
-        dao.create(data2)
+    with pytest.raises(pymongo.errors.WriteError) as exc_info:
+        sut.create(task2)
+    assert "Document failed validation" in str(exc_info.value)
+
+
+# At least one property does not comply with bson
+@pytest.mark.integration
+def test_create_3(sut):
+    task = {"description":"test task one.", "done": 1}
+
+    with pytest.raises(pymongo.errors.WriteError) as exc_info:
+        sut.create(task)
+    assert "Document failed validation" in str(exc_info.value)
+
+# At least one of the required properties is missing
+@pytest.mark.integration
+def test_create_4(sut):
+    task = {"done": True}
+    #task2 = {"description":"test task one.", "done": True}
+    #sut.create(task)
+
+    with pytest.raises(pymongo.errors.WriteError) as exc_info:
+        sut.create(task)
+    assert "Document failed validation" in str(exc_info.value)
