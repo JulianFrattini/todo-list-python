@@ -3,6 +3,7 @@ import unittest.mock as mock
 from unittest.mock import patch
 from src.controllers.usercontroller import UserController
 
+@pytest.mark.unit
 def test_check_valid_email():
     """ 
     Test if get_user_by_email function returns the user object when the valid email is sent and
@@ -16,6 +17,7 @@ def test_check_valid_email():
     results = sut.get_user_by_email(email)
     assert results == { "email": email}
     
+@pytest.mark.unit
 def test_check_valid_email_not_in_db():
     """ 
     Test if get_user_by_email function does not return a user object when a valid email is sent but
@@ -30,6 +32,7 @@ def test_check_valid_email_not_in_db():
     results = sut.get_user_by_email(emailNotInDB)
     assert results != {"email": emailNotInDB}
 
+@pytest.mark.unit
 def test_empty_string():
     """ 
     Test if get_user_by_email function raises an exception when the input is empty string
@@ -41,6 +44,7 @@ def test_empty_string():
     with pytest.raises(Exception):
         sut.get_user_by_email(emptyEmail)
 
+@pytest.mark.unit
 def test_empty_input():
     """
     Test if get_user_by_email function raises an exception when the input is empty
@@ -51,6 +55,7 @@ def test_empty_input():
     with pytest.raises(Exception):
         sut.get_user_by_email()
 
+@pytest.mark.unit
 def test_no_at():
     """
     Test if get_user_by_email function raises a ValueError when sending no @
@@ -63,6 +68,7 @@ def test_no_at():
     with pytest.raises(ValueError):
         sut.get_user_by_email(email)
 
+@pytest.mark.unit
 @patch('builtins.print')
 def test_with_two_same_email(mock_print):
     """
@@ -77,6 +83,7 @@ def test_with_two_same_email(mock_print):
     # This test if the print displays in usercontroller
     mock_print.assert_called_with('Error: more than one user found with mail test@gmail.com')
 
+@pytest.mark.unit
 def test_missing_dot_before_domain():
     """
     Test if get_user_by_email function raises an exception when no dot is sent
@@ -89,6 +96,7 @@ def test_missing_dot_before_domain():
     with pytest.raises(ValueError):
         sut.get_user_by_email(email)
 
+@pytest.mark.unit
 def test_database_operation_exception():
     """
     Test if get_user_by_email function raises an exception when database operation fails.
