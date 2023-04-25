@@ -3,7 +3,6 @@ from src.util.dao import DAO
 from unittest.mock import patch
 from pymongo.errors import WriteError
 
-
 @pytest.fixture
 def mock_validator():
     # Define the mocked validator
@@ -46,7 +45,7 @@ def dao(mock_validator):
         yield DAO('user')
      
 
-def test_create_with_valid_email(dao):
+def test_create_user_with_valid_email(dao):
     # Call the create method and check the return value
     new_user = {
         "firstName": "Help",
@@ -60,7 +59,7 @@ def test_create_with_valid_email(dao):
     assert result['lastName'] == new_user['lastName']
     assert result['email'] == new_user['email']
 
-def test_create_with_invalid_email_type(dao):
+def test_create_user_with_invalid_email_type(dao):
     # Call the create method and check the return value
     new_user = {
         "firstName": "Help",
@@ -72,12 +71,27 @@ def test_create_with_invalid_email_type(dao):
     with pytest.raises(WriteError):
             dao.create(new_user)
 
-def test_create_users_with_same_email(dao):
+def test_create_user_with_same_email(dao):
     # Call the create method and check the return value
 
     # New user with same email as a existing user (email has to be unique)
     new_user = {
         "firstName": "Test",
+        "lastName": "Testingsson",
+        "email": "testing@test.com",
+        "tasks": []
+    }
+    # Use pytest.raises to check if WriteError is raised
+    with pytest.raises(WriteError):
+        result = dao.create(new_user)
+        dao.delete(result['_id']['$oid'])
+
+    
+def test_create_user_with_missing_property(dao):
+    # Call the create method and check the return value
+
+    # New user with same email as a existing user (email has to be unique)
+    new_user = {
         "lastName": "Testingsson",
         "email": "testing@test.com",
         "tasks": []
