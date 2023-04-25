@@ -43,13 +43,14 @@ def test_get_user_by_email_with_invalid_email_raises_value_error(dao_mock, contr
     with pytest.raises(ValueError):
         controller.get_user_by_email(email)
 
-def test_get_user_by_email_with_none_existent_return_none(dao_mock, controller):
+def test_get_user_by_email_with_nonexistent_email_returns_none(dao_mock, controller):
     # Arrange
     email = "test@example.com"
 
     dao_mock.find.return_value = None
 
-    # Act and Assert
-    with pytest.raises(Exception):
-        controller.get_user_by_email(email)
+    # Act
+    result = controller.get_user_by_email(email)
 
+    # Assert
+    assert result is None
