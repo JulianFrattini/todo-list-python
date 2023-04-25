@@ -1,0 +1,16 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["description"],
+        "properties": {
+            "description": {
+                "bsonType": "string",
+                "description": "the description of a todo must be determined",
+                "uniqueItems": true
+            }, 
+            "done": {
+                "bsonType": "bool"
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["title", "description"],
+        "properties": {
+            "title": {
+                "bsonType": "string",
+                "description": "the title of a task must be determined",
+                "uniqueItems": true
+            }, 
+            "description": {
+                "bsonType": "string",
+                "description": "the description of a task must be determined"
+            }, 
+            "startdate": {
+                "bsonType": "date"
+            }, 
+            "duedate": {
+                "bsonType": "date"
+            },
+            "requires": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "objectId"
+                }
+            },
+            "categories": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "string"
+                }
+            },
+            "todos": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "objectId"
+                }
+            },
+            "video": {
+                "bsonType": "objectId"
+            }
+        }
+    }
+}

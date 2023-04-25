@@ -1,0 +1,43 @@
+:root {
+  --bg: #242526;
+  --bg-accent: #484a4d;
+  --bg-good: #b4e61d;
+  --bg-bad: #ed1c23;
+  --bg-disabled: #c0c0c0;
+
+  --text-color: #dadce1;
+  --text-color-dark: #242526;
+  --nav-size: 60px;
+  --border: 1ps solid #474a4d;
+  --border-radius: 8px;
+  --speed: 500ms;
+}
+
+.App {
+  text-align: center;
+}
+
+html {
+  background: #f7f7f7;
+}
+
+body {
+  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  color: rgb(49, 46, 46);
+  background: white;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.main {
+  padding: 0px 10px 0px 10px;
+}
+
+/* MEDIA QUERIES */
+@media (min-width: 800px) {
+  body {
+    max-width: 1200px;
+    text-align: left;
+  }
+}

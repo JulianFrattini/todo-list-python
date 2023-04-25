@@ -1,0 +1,27 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["firstName", "lastName", "email"],
+        "properties": {
+            "firstName": {
+                "bsonType": "string",
+                "description": "the first name of a user must be determined"
+            }, 
+            "lastName": {
+                "bsonType": "string",
+                "description": "the last name of a user must be determined"
+            },
+            "email": {
+                "bsonType": "string",
+                "description": "the email address of a user must be determined",
+                "uniqueItems": true
+            },
+            "tasks": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "objectId"
+                }
+            }
+        }
+    }
+}
