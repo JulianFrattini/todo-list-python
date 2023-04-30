@@ -9,6 +9,7 @@ from src.util.helpers import hasAttribute, ValidationHelper
 def test_hasAttribute_true(obj, expected):
     assert hasAttribute(obj, 'name') == expected
 
+
 # tests for the validateAge method
 @pytest.fixture
 def sut(age: int):
