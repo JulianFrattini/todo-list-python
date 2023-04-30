@@ -3,26 +3,54 @@
 from src.controllers.usercontroller import UserController
 import pytest
 import unittest.mock as mock
+from unittest.mock import patch
 from src.util.dao import DAO
 
-@pytest.mark.demo
 
-# tests for the hasAttribute method
-@pytest.mark.demo
-@pytest.mark.parametrize('obj, expected', [({'name': 'Jane'}, True), ({'email': 'jane.doe@gmail.com'}, False), (None, False)])
-def test_get_user_by_email(obj, expected):
-    assert hasAttribute(obj, 'name') == expected
+# def test_get_user_by_email_old():
+#     mockedDAO = mock.MagicMock()
+#     mockedDAO.find.return_value = [{"person object"}]
 
-# tests for the validateAge method
-@pytest.fixture
-def sut(age: int):
-    mockedusercontroller = mock.MagicMock()
-    mockedusercontroller.get.return_value = {'age': age}
-    mockedsut = ValidationHelper(usercontroller=mockedusercontroller)
-    return mockedsut
+#     sut = UserController(dao=mockedDAO)
 
-@pytest.mark.demo
-@pytest.mark.parametrize('age, expected', [(-1, 'invalid'), (0, 'underaged'), (1, 'underaged'), (17, 'underaged'), (18, 'valid'), (19, 'valid'), (119, 'valid'), (120, 'valid'), (121, 'invalid')])
-def test_validateAge(sut, expected):
-    validationresult = sut.validateAge(userid=None)
-    assert validationresult == expected
+#     usercontrollerresult = sut.get_user_by_email(email="test@email.com")
+#     assert usercontrollerresult == {"person object"}
+
+
+@pytest.mark.parametrize(
+    "input_email, return_value, output_expected",
+    [
+        (
+            "test@email.com",
+            [{"person object"}],
+            {"person object"}
+        ), # test basic functionality
+        (
+            "not an email",
+            [{"person object"}],
+            ValueError('Error: invalid email address')
+        ), # test error if not an email
+        (
+            13,
+            [{"person object"}],
+            "expected string or bytes-like object"
+        ), # test error email not a string
+        (
+            "test@email.com",
+            [{"person object"}, {"other person object"}],
+            {"person object"}
+        ) # tests returning first email applicable
+    ]
+)
+def test_get_user_by_email(input_email, return_value, output_expected):
+    mockedDAO = mock.MagicMock()
+    mockedDAO.find.return_value = return_value
+
+    sut = UserController(dao=mockedDAO)
+
+    try:
+        usercontrollerresult = sut.get_user_by_email(email=input_email)
+        assert usercontrollerresult == output_expected
+    except Exception as e:
+        assert str(e) == str(output_expected)
+
