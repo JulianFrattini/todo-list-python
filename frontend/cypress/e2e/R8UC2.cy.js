@@ -28,28 +28,40 @@ describe("R8UC2", () => {
     cy.get(".container-element a").last().click();
   });
 
-  it("Main Success Scenario: Test to click on the icon in front of the description of the todo item (When unchecked)", () => {
+  it("Main Success Scenario 1: Test to click on the icon in front of the description of the todo item (When unchecked)", () => {
     cy.get("li.todo-item").last().within(() => {
-      cy.get("span").first().click();
+      cy.get("span").first().click(); // Click on the first span (when it's unchecked)
     })
   });
 
-  it("Main Success Scenario: Test to see if the span is checked if it's set to done (active)", () => {
+  it("Main Success Scenario 2: Test to see if the span is checked if it's set to done (active)", () => {
     cy.get("li.todo-item").last().within(() => {
-      cy.get("span").first().get(".checked");
+      cy.get("span").first().get(".checked"); // Check the first span if it has a .checked class 
     })
   })
 
-  it("Alternative Scenarios: Test to click on the icon in front of the description of the todo item (When checked)", () => {
+  it("End Condition 1: The toggled todo item is struck through. ", () => {
     cy.get("li.todo-item").last().within(() => {
-      cy.get("span").first().click();
+      cy.get("span").eq(1).should("have.css", "text-decoration", "line-through solid rgb(49, 46, 46)"); // Check if the titel have a line-through in css
+    })
+  })
+
+  it("Alternative Scenarios 1: Test to click on the icon in front of the description of the todo item (When checked)", () => {
+    cy.get("li.todo-item").last().within(() => {
+      cy.get("span").first().click(); // Click on the first span (when it's checked)
     })
   });
 
-  it("Alternative Scenarios: Test to see if the span is unchecked if it's set to undone (Not active)", () => {
+  it("Alternative Scenarios 1: Test to see if the span is unchecked if it's set to undone (Not active)", () => {
     cy.get("li.todo-item").last().within(() => {
-      cy.get("span").first().get(".unchecked");
+      cy.get("span").first().get(".unchecked"); // Check the first span if it has a .unchecked class
     })
   });
+
+  it("End Condition 2 (alternative): The toggled todo item is struck through. ", () => {
+    cy.get("li.todo-item").last().within(() => {
+      cy.get("span").eq(1).should("have.css", "text-decoration", "none solid rgb(49, 46, 46)"); // Check if the titel have a line-through in css
+    })
+  })
 
 });

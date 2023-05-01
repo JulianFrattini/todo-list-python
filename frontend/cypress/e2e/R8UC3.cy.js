@@ -2,7 +2,8 @@
 // The user is authenticated, has at least one task with at least one todo item associated to his account, and views this task in detail view mode.
 
 // Main Success Scenario
-// 1. If user clicks on the x symbol behind the description of the todo item, the todo item is deleted End Condition The todo item is removed from the todo list.
+// 1. If user clicks on the x symbol behind the description of the todo item, the todo item is deleted
+// End Condition The todo item is removed from the todo list.
 
 // Alternative Scenarios
 // None
@@ -29,7 +30,7 @@ describe("R8UC3", () => {
       })
     });
   
-    it("Main Success Scenario: Test to see if the backlog 2 is removed (The last todo-item)", () => {
+    it("End Condition: Test to see if the backlog 2 is removed (The last todo-item)", () => {
         cy.get("li.todo-item").last().contains("span", "Backlog 2").should("not.exist");
     })
   });

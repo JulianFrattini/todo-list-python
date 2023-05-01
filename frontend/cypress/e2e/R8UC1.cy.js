@@ -38,8 +38,21 @@
 //     cy.get("form").submit();
 //   }); <-- om det skulle behövas, det med att skapa konton
 
+import "./login.cy";
 
 describe("R8UC1", () => {
+  before(function () {
+    cy.visit("http://localhost:3000/"); // Visit localhost
+    cy.viewport(1920, 1080); // Set the viewport to 1920 x 1080
+    cy.contains("div", "Email Address") // Look if the div contains email address
+      .find("input[type=text]") // If true then find the text input
+      .type("mon.doe@gmail.com"); // Enter the mail mon.doe@gmail.com in the text input
+
+    cy.get("form").submit(); // Submit the login form
+    cy.contains("div", "Title").find("input[type=text]").type("Test task"); // Look if div contains Title then find the input text and write "Test task" in the input text
+    cy.contains("Create new Task").click(); // Find the input "create new task" and click on it to create new task
+  });
+
   beforeEach(function () { // After each test
     cy.visit("http://localhost:3000/"); // Visit localhost
     cy.viewport(1920, 1080); // Set the viewport to 1920 x 1080
@@ -50,29 +63,13 @@ describe("R8UC1", () => {
     cy.get("form").submit(); // Submit the login form
   });
 
-  it("Test create a task", () => {
-    cy.contains("div", "Title").find("input[type=text]").type("Test task"); // Look if div contains Title then find the input text and write "Test task" in the input text
-    cy.contains("Create new Task").click(); // Find the input "create new task" and click on it to create new task
-  });
-
-  it("Test if the task has been created", () => {
-    cy.get(".container-element").contains("div", "Test task"); // FInd .cotainer-element and if it contains a div with a title of "Test task"
-  });
-
-  it("Test to open the task", () => {
-    cy.get(".container-element a").last().click(); // Find the div with title Test task
-    cy.get(".popup-inner").within(() => { // Get .popup-inner (the task popup)
-      cy.contains("h1", "Test task"); // Within the .popup-inner find tag h1 with value "Test task"
-    });
-  });
-
-  it("Test add 2 todo items", () => {
+  it("Main Success Scenario 1 and 2: Test add 2 todo items", () => {
     cy.get(".container-element a").last().click(); // Find the div with title Test task
 
     // Create the first todo item
     cy.get(".inline-form").within(() => { // Get .inline-form (the todo item form)
-      cy.get("input[type=text]").type("Backlog 1"); // Within the .inline-form get text input and type "Backlog 1"
-      cy.get("input[type=submit]").click(); // Within the .inline-form get submit input and click on it to create a todo item in the task
+      cy.get("input[type=text]").type("Backlog 1"); // Within the .inline-form get text input and type "Backlog 1" (Main Success Scenario: 1)
+      cy.get("input[type=submit]").click(); // Within the .inline-form get submit input and click on it to create a todo item in the task (Main Success Scenario: 2)
     });
 
     // Create the second todo item
@@ -83,8 +80,8 @@ describe("R8UC1", () => {
   });
 
   it("End Condition: Test if the new (active) todo item with the given description is appended to the bottom of the list of existing todo items ", () => {
-    cy.get(".container-element a").last().click(); // Find the div with title Test task
-    cy.get("li.todo-item").last().contains("span", "Backlog 2"); // Get the last li.todo-item in the todo-list and check if the span has title Backlog 2
+    cy.get(".container-element a").last().click(); // Find the div with title Test task (Main Success Scenario: 1)
+    cy.get("li.todo-item").last().contains("span", "Backlog 2"); // Get the last li.todo-item in the todo-list and check if the span has title Backlog 2 (Main Success Scenario: 2)
   });
 
   it("Alternative Scenario: Test if add input is disabled if description is empty in the todo form", () => {
