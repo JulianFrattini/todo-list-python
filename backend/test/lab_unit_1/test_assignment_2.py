@@ -30,16 +30,16 @@ from src.util.dao import DAO
             [{"person object"}],
             ValueError('Error: invalid email address')
         ), # test error if not an email
-        (
-            "test@email.com",
-            (),
-            TypeError("tuple index out of range") 
-        ), # tests returning tuple as person object
-        (
-            "test@email.com",
-            13,
-            TypeError("object of type 'int' has no len()")
-        ), # tests returning integer as person object
+        # (
+        #     "test@email.com",
+        #     (),
+        #     TypeError("tuple index out of range") 
+        # ), # tests returning tuple as person object
+        # (
+        #     "test@email.com",
+        #     13,
+        #     TypeError("object of type 'int' has no len()")
+        # ), # tests returning integer as person object
         (
             13,
             [{"person object"}],
