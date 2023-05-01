@@ -30,6 +30,7 @@ class DAO:
         print(
             f'Connecting to collection {collection_name} on MongoDB at url {MONGO_URL}')
         client = pymongo.MongoClient(MONGO_URL)
+        print(client)
         database = client.edutask
 
         # create the collection if it does not yet exist
