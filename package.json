@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "npx": "^10.2.2"
+  },
+  "devDependencies": {
+    "cypress": "^12.11.0"
+  },
+  "scripts": {
+    "test": "npx cypress run --record --key 66a7f31c-13da-464f-9498-e5265db8b012"
   }
 }
