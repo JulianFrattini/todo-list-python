@@ -118,14 +118,34 @@ describe('Logging into the system', () => {
     })
 
     //  ******************** R8UC2 *************************
-    // it('edit todo-item from an existing account', () => {
-    //   cy.contains('div', 'Email Address')
-    //     .find('input[type=text]')
-    //     .type('mon.doe@gmail.com{enter}')
+    it('click the icon in front of a todo-item', () => {
+      cy.contains('div', 'Email Address')
+        .find('input[type=text]')
+        .type('mon.doe@gmail.com{enter}')
 
-    //   cy.get('.container-element')
-    //     .find('a')
-    //     .first().click()
+      cy.get('.container-element')
+        .find('a')
+        .first().click()
+
+      //tocheck the toggle if struck through or not!
+      cy.get('.todo-list').first()
+        .find('.todo-item').first()
+        .find('span.editable')
+        // .should('have.class', 'checker unchecked')
+        .should('not.have.css', 'text-decoration', 'line-through');
+
+      cy.pause() // this will activate the line-through
+
+      cy.get('.todo-list').first()
+        .find('.todo-item').first()
+        .find('span.checker').click()
+
+      cy.get('.todo-list').first()
+        .find('.todo-item').first()
+        .find('span.editable')
+        .should('have.css', 'text-decoration', 'line-through solid rgb(49, 46, 46)');
+      })
+
 
     //   cy.get('ul')
     //     .should('have.class', 'todo-list')
@@ -135,17 +155,7 @@ describe('Logging into the system', () => {
     //     expect($lis.eq(0)).to.contain('Watch video')
     //     expect($lis.eq(1)).to.contain(todo1)
     //   })
-    // //tocheck the toggle if struck through or not!
-    //   cy.get('.todo-list').first()
-    //     .find('.todo-item').first()
-    //     .find('span').first().should('have.class', 'checker unchecked')
 
-
-    //   cy.get('.todo-list').first()
-    //     .find('.todo-item').first()
-    //     .find('span').first().click()
-
-    //   cy.wait(1000) // wait for 1 second
     //     // get AssertionError
     //   // cy.get('.todo-list > .todo-item').first()
     //   //   .find('.checker').should('have.class', 'checker checked')
@@ -207,7 +217,6 @@ describe('Logging into the system', () => {
       cy.request({
         method: 'DELETE',
         url: `http://localhost:5000/users/${uid}`
-        // url: `http://localhost:27017/users/${uid}`
       }).then((response) => {
         cy.log(response.body)
       })
