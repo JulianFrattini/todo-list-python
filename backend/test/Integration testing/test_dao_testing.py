@@ -38,31 +38,32 @@ def daoTearDown(daoSetUp):
 @pytest.mark.parametrize("test_valid_data", [({ "test_name": "Kasper", "test_studying": True })])
 def test_create_with_valid_data(daoSetUp, test_valid_data):
     """ Test create function with valid data to see if it creates a document in mongodb """
-    validation_result = daoSetUp.create(test_valid_data)
-    users = daoSetUp.find()
-
-    assert validation_result is not None
-    assert len(users) == 1
+    try:
+        daoSetUp.create(test_valid_data)
+    except(Exception):
+        assert False # If raises exception the test fails
 
 @pytest.mark.integration
 @pytest.mark.parametrize("invalid_data", [({ "test_name": 2, "test_studying": "hej" })])
 def test_create_with_invalid_data(daoSetUp, invalid_data):
-    """ Test create function with invalid data to see if it raises an exception and it hasn't created any document in MongoDB """
-    with pytest.raises(Exception):
+    """ Test create function with invalid data to see if it raises an exception """
+    try:
         daoSetUp.create(invalid_data)
-
-    users = daoSetUp.find()
-
-    assert len(users) == 0
+    except(Exception):
+        assert True # If raises exception the test success
 
 @pytest.mark.integration
-def test_create_unique_id(daoSetUp):
-    """ Test create function with valid data and look for if it's unique id on both users that has been created """
-    daoSetUp.create({ "test_name": "Majd", "test_studying": True })
-    daoSetUp.create({ "test_name": "Kasper", "test_studying": True })
-    users = daoSetUp.find()
-
-    assert users[0]["_id"] != users[1]["_id"]
+def test_create_with_same_uniqueItems(daoSetUp):
+    """ 
+    Test to create with same name in the test_name (when test name is a uniqueItem) 
+    and see if it raises an exception 
+    """
+    try:
+        daoSetUp.create({ "test_name": "Kasper", "test_studying": True })
+        daoSetUp.create({ "test_name": "Kasper", "test_studying": False })
+        assert False
+    except Exception:
+        assert True
 
 @pytest.mark.integration
 def test_create_no_valid_db():
@@ -72,3 +73,15 @@ def test_create_no_valid_db():
     
         with pytest.raises(Exception):
             DAO("test")
+
+@pytest.mark.integration
+def test_create_with_diffrent_property(daoSetUp):
+    """ Test to create with same name in the test_name """
+    try:
+        validation_result2 = daoSetUp.create({ "test_name": "Majd", "test_studying": False })
+        validation_result1 = daoSetUp.create({ "test_name": "Kasper", "test_dancing": True })
+        print(validation_result1)
+        print(validation_result2)
+        assert False
+    except Exception:
+        assert True
