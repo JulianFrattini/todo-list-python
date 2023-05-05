@@ -31,7 +31,7 @@ describe('GUI Testing by manipulating a todo item', () => {
         .should('contain.text', 'Login')
     })
 
-    it('login to the system with an existing account', () => {
+    it('UC1-TC1&TC2: user trys to create a new todo-item', () => {
       cy.contains('div', 'Email Address')
         .find('input[type=text]')
         .type('mon.doe@gmail.com')
@@ -102,7 +102,7 @@ describe('GUI Testing by manipulating a todo item', () => {
     })
 
     //  ******************** R8UC2 *************************
-    it('UC2: click on icon in front of a todo-item', () => {
+    it('UC2-TC1: click on icon in front of an active todo-item', () => {
       cy.contains('div', 'Email Address')
         .find('input[type=text]')
         .type('mon.doe@gmail.com{enter}')
@@ -126,6 +126,27 @@ describe('GUI Testing by manipulating a todo item', () => {
       .should('be.visible')
       .should('have.css', 'text-decoration', 'line-through solid rgb(49, 46, 46)');
 
+    })
+
+    it('UC2-TC2: click on icon in front of a done todo-item', () => {
+      cy.contains('div', 'Email Address')
+        .find('input[type=text]')
+        .type('mon.doe@gmail.com{enter}')
+
+      cy.get('.container-element')
+        .find('a')
+        .first().click()
+
+      //tocheck the toggle if struck through or not!
+      cy.get('.todo-list').first()
+        .find('.todo-item').first().as('toCheck')
+        .find('span.checker')
+        .should(($span) => {
+          expect($span).to.have.class('checked')
+        })
+      cy.get('@toCheck')
+        .find('span.editable')
+        .should('have.css', 'text-decoration', 'line-through solid rgb(49, 46, 46)');
     })
 
     //  ******************** R8UC3 *************************
