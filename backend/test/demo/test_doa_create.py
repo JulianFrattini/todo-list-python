@@ -19,56 +19,71 @@ class Test_DAO_Create_Get_User_Validator:
             sut.collection.drop()
 
 
-    # testCase1 with valid properites, required properites, fullfilled sub-properites .
+    # testCase0 with firsTName(string), lastName(string), unique email(string).
     @pytest.mark.task3
     def testCase1(self, sut):
-        validationResult = sut.create({"firstName":"testCase1", "lastName":"test", "email":"testCase1@gmail.com"})
-        assert validationResult == {"_id":validationResult["_id"], "firstName":"testCase1", "lastName":"test", "email":"testCase1@gmail.com"}
+        validationResult = sut.create({"firstName":"testCase0", "lastName":"test", "email":"testCase0@gmail.com"})
+        assert validationResult == {"_id":validationResult["_id"], "firstName":"testCase0", "lastName":"test", "email":"testCase0@gmail.com"}
 
-    # testCase2 with valid properites, required properites, not fullfilled sub-properites(firstName not type string)
+    # testCase1 with firsTName(string), lastName(string), not unique email(string).
+    @pytest.mark.task3
+    def testCase1(self, sut):
+        # inerting the same email to the database
+        sut.create({"firstName":"testCase1", "lastName":"test", "email":"testCase1@gmail.com"})
+        with pytest.raises(WriteError):
+            validationResult = sut.create({"firstName":"testCase1", "lastName":"test", "email":"testCase1@gmail.com"})
+        assert WriteError == WriteError
+
+
+    # testCase2 with firsTName(string), lastName(string), email(not string).
     @pytest.mark.task3
     def testCase2(self, sut):
         with pytest.raises(WriteError):
-            sut.create({"firstName":10, "lastName":"test", "email":"testCase2@gmail.com"})
+            sut.create({"firstName":"testCase2", "lastName":"test", "email":10})
         assert WriteError == WriteError
         
-    # testCase3 with valid properites, required properites, not fullfilled sub-properites(lastName not type string)
+    # testCase3 with firsTName(string), lastName(string), missing(email)
     @pytest.mark.task3
     def testCase3(self, sut):
         with pytest.raises(WriteError):
-            sut.create({"firstName":"testCase3", "lastName":10, "email":"testCase3@gmail.com"})
+            sut.create({"firstName":"testCase3", "lastName":"test"})
         assert WriteError == WriteError
 
-    # testCase4 with valid properites, required properites, not fullfilled sub-properites(email not type string)
+    # testCase4 with firsTName(string), lastName(not string), unique email(string).
     @pytest.mark.task3
     def testCase4(self, sut):
         with pytest.raises(WriteError):
-            sut.create({"firstName":"testCase4", "lastName":"test", "email":10})
+            sut.create({"firstName":"testCase4", "lastName":10, "email":"testCase4@gmail.com"})
         assert WriteError == WriteError
 
 
-    # testCase5 with valid properites, required properites, not fullfilled sub-properites (email) duplicated.
-    # testing with the same input data as "testCase1"
+    # testCase5 with firsTName(string),lastName(not string), unique email(string).
     @pytest.mark.task3
     def testCase5(self, sut):
         with pytest.raises(WriteError):
-            sut.create({"firstName":"testCase1", "lastName":"test", "email":"testCase1@gmail.com"})
+            sut.create({"firstName":"testCase5", "lastName":10, "email":"testCase5@gmail.com"})
         assert WriteError == WriteError
 
-    # testCase6 with valid properites, not all required properites.
+    # testCase6 with firsTName(string), missing(lastName),unique email(string).
     @pytest.mark.task3
     def testCase6(self, sut):
         with pytest.raises(WriteError):
             sut.create({"firstName":"testCase6", "email":"testCase6@gmail.com"})
         assert (WriteError) == WriteError
 
-    # testCase7 with invalid properites.
+    # testCase7 with firsTName(not string),lastName(string), unique email(string).
     @pytest.mark.task3
     def testCase7(self, sut):
         with pytest.raises(WriteError):
-            sut.create({"firstName":"testCase7", "tel":"077777777", "lastName":"test", "email":"testCase7@gmail.com"})
+            sut.create({"firstName":10, "lastName":"test", "email":"testCase7@gmail.com"})
         assert (WriteError) == WriteError
 
+    # testCase8 with missing(firstName),lastName(string), unique email(string).
+    @pytest.mark.task3
+    def testCase7(self, sut):
+        with pytest.raises(WriteError):
+            sut.create({"lastName":"test", "email":"testCase8@gmail.com"})
+        assert (WriteError) == WriteError
 
 
 
