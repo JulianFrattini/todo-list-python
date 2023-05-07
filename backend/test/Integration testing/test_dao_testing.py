@@ -33,11 +33,11 @@ def daoSetUp():
 
 @pytest.mark.integration
 @pytest.mark.parametrize("test_valid_property_and_bson_data", [({ "test_name": "Kasper", "test_studying": True })])
-def test_create_with_valid_property_and_bson(daoSetUp, test_valid_property_and_bson):
+def test_create_with_valid_property_and_bson(daoSetUp, test_valid_property_and_bson_data):
     """ Test create function with valid property and bson to see if it creates a document in mongodb """
     result = "success"
     try:
-        daoSetUp.create(test_valid_property_and_bson)
+        daoSetUp.create(test_valid_property_and_bson_data)
     except pymongo.errors.WriteError:
         result = "error"
 
