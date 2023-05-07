@@ -22,7 +22,7 @@ json_validator = {
 
 @pytest.fixture(autouse=True)
 def daoSetUp():
-    """  Mock the getValidator function and assign it to own validator,  """
+    """ Mock the getValidator function, set up DAO with collection integration_test, and drop the collection after each test. """
     with patch("src.util.dao.getValidator") as mock_get_validator:
         mock_get_validator.return_value = json_validator # Creates own validator for integration_test collection
         dao = DAO("integration_test") # Create collection if not already exists
@@ -31,70 +31,48 @@ def daoSetUp():
         finally:
             dao.drop()
 
-#@pytest.fixture(autouse=True)
-#@patch("src.util.dao.getValidator")
-#def daoSetUp(mock_get_validator):
-#    """  Mock the getValidator function, clear and set up DAO with collection integration_test """
-#    mock_get_validator.return_value = json_validator # Creates own validator for integration_test collection
-#    dao = DAO("integration_test") # Create collection if not already exists
-#
-#    return dao
-
-#@pytest.fixture(autouse=True)
-#def daoTearDown(daoSetUp):
-#    """ Drop the collection after each test is executed """
-#    yield
-#    daoSetUp.drop()
-
 @pytest.mark.integration
 @pytest.mark.parametrize("test_valid_data", [({ "test_name": "Kasper", "test_studying": True })])
-def test_create_with_valid_data(daoSetUp, test_valid_data):
-    """ Test create function with valid data to see if it creates a document in mongodb """
-    test_case = True
+def test_create_with_valid_property_and_bson(daoSetUp, test_valid_data):
+    """ Test create function with valid property and bson to see if it creates a document in mongodb """
+    result = "success"
     try:
         daoSetUp.create(test_valid_data)
     except pymongo.errors.WriteError:
-        test_case = False
+        result = "error"
 
-    assert test_case == True
+    assert result == "success"
 
 @pytest.mark.integration
 @pytest.mark.parametrize("invalid_data", [({ "test_name": 2, "test_studying": "hej" })])
-def test_create_with_invalid_data(daoSetUp, invalid_data):
-    """ Test create function with invalid data to see if it raises an exception """
-    try:
+def test_create_with_invalid_bson(daoSetUp, invalid_data):
+    """ Test create function with invalid bson to see if it raises an exception """
+    with pytest.raises(pymongo.errors.WriteError) as error:
         daoSetUp.create(invalid_data)
-    except pymongo.errors.WriteError:
-        assert True # If raises exception the test success
 
 @pytest.mark.integration
-@pytest.mark.parametrize("test_same_uniqueItem", [({ "test_name": "Kasper", "test_studying": True }, { "test_name": "Kasper", "test_studying": False })])
-def test_create_with_same_uniqueItems(daoSetUp, test_same_uniqueItem):
+@pytest.mark.parametrize("test_with_invalid_properties", [{ "test_names": "Kasper", "test_studying": True }, { "test_name": "Kasper", "test_dancing": True }])
+def test_create_invalid_properties(daoSetUp, test_with_not_valid_properties):
+    """ Test to create with diffrent properties (invalid properties)"""
+    with pytest.raises(pymongo.errors.WriteError) as error:
+        daoSetUp.create(test_with_not_valid_properties)
+
+@pytest.mark.integration
+def test_create_with_dublicate_names(daoSetUp):
     """ 
-    Test to create with same name in the test_name (when test name is a uniqueItem) 
-    and see if it raises an exception 
+    Test to create with duplicate names in the test_name (when test name have a uniqueItem to True) 
+    and see if it raises an exception.
     """
-    try:
-        daoSetUp.create(test_same_uniqueItem)
-        assert False
-    except Exception:
-        assert True
+    with pytest.raises(pymongo.errors.WriteError) as error:
+        daoSetUp.create({ "test_name": "Kasper", "test_studying": True })
+        daoSetUp.create({ "test_name": "Kasper", "test_studying": True })
+
 
 @pytest.mark.integration
 def test_create_no_valid_db():
     """ Test to set up dao with no valid database connection """
     with patch("pymongo.MongoClient") as mock_client:
         mock_client.side_effect = Exception()
-    
-        with pytest.raises(Exception):
-            DAO("test")
 
-@pytest.mark.integration
-@pytest.mark.parametrize("test_with_not_valid_properties", [({ "test_names": "Kasper", "test_studying": True }, { "test_name": "Kasper", "test_dancing": True })])
-def test_create_with_diffrent_property(daoSetUp, test_with_not_valid_properties):
-    """ Test to create with same name in the test_name """
-    try:
-        valid = daoSetUp.create(test_with_not_valid_properties)
-        assert False # If not crash then fails the test
-    except Exception:
-        assert True
+        with pytest.raises(Exception):
+            DAO("integration_test")
