@@ -30,7 +30,7 @@ def test_check_valid_email_not_in_db():
     emailNotInDB = 'sut@edutask.com'
 
     results = sut.get_user_by_email(emailNotInDB)
-    assert results != {"email": emailNotInDB}
+    assert results == None
 
 @pytest.mark.unit
 def test_empty_string():
