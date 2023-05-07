@@ -32,30 +32,30 @@ def daoSetUp():
             dao.drop()
 
 @pytest.mark.integration
-@pytest.mark.parametrize("test_valid_data", [({ "test_name": "Kasper", "test_studying": True })])
-def test_create_with_valid_property_and_bson(daoSetUp, test_valid_data):
+@pytest.mark.parametrize("test_valid_property_and_bson_data", [({ "test_name": "Kasper", "test_studying": True })])
+def test_create_with_valid_property_and_bson(daoSetUp, test_valid_property_and_bson):
     """ Test create function with valid property and bson to see if it creates a document in mongodb """
     result = "success"
     try:
-        daoSetUp.create(test_valid_data)
+        daoSetUp.create(test_valid_property_and_bson)
     except pymongo.errors.WriteError:
         result = "error"
 
     assert result == "success"
 
 @pytest.mark.integration
-@pytest.mark.parametrize("invalid_data", [({ "test_name": 2, "test_studying": "hej" })])
-def test_create_with_invalid_bson(daoSetUp, invalid_data):
+@pytest.mark.parametrize("test_invalid_bson_data", [{ "test_name": 2, "test_studying": True }, { "test_name": "Kasper", "test_studying": "hej" }])
+def test_create_with_invalid_bson(daoSetUp, test_invalid_bson_data):
     """ Test create function with invalid bson to see if it raises an exception """
     with pytest.raises(pymongo.errors.WriteError) as error:
-        daoSetUp.create(invalid_data)
+        daoSetUp.create(test_invalid_bson_data)
 
 @pytest.mark.integration
-@pytest.mark.parametrize("test_with_invalid_properties", [{ "test_names": "Kasper", "test_studying": True }, { "test_name": "Kasper", "test_dancing": True }])
-def test_create_invalid_properties(daoSetUp, test_with_not_valid_properties):
+@pytest.mark.parametrize("test_invalid_properties_data", [{ "test_names": "Kasper", "test_studying": True }, { "test_name": "Kasper", "test_dancing": True }])
+def test_create_invalid_properties(daoSetUp, test_invalid_properties_data):
     """ Test to create with diffrent properties (invalid properties)"""
     with pytest.raises(pymongo.errors.WriteError) as error:
-        daoSetUp.create(test_with_not_valid_properties)
+        daoSetUp.create(test_invalid_properties_data)
 
 @pytest.mark.integration
 def test_create_with_dublicate_names(daoSetUp):
