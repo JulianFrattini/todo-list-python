@@ -56,7 +56,7 @@ function TaskDetail({ taskid, updateTasks }) {
                 console.error(error)
             });
 
-        
+
         setTodo("");
     }
 
@@ -109,7 +109,7 @@ function TaskDetail({ taskid, updateTasks }) {
                 </h1>
 
                 <p>
-                    <Editable objectname="tasks" object={task} variablename="description" updateTasks={updateTasks} />
+                    <Editable objectname="tasks" object={task} variablename="todoTitle" updateTasks={updateTasks} />
                 </p>
 
                 <a href={`https://www.youtube.com/watch?v=${task.url}`} target='_blank' rel="noreferrer">
@@ -119,7 +119,7 @@ function TaskDetail({ taskid, updateTasks }) {
                     {todos.map(todo =>
                         <li key={todo._id} className='todo-item'>
                             <span className={'checker ' + (todo.done ? 'checked' : 'unchecked')} onClick={() => toggleTodo(todo)}></span>
-                            <Editable objectname="todos" object={todo} variablename="description" updateTasks={updateTasks} />
+                            <Editable objectname="todos" object={todo} variablename="todoTitle" updateTasks={updateTasks} />
                             <span className='remover' onClick={() => deleteTodo(todo)}>&#x2716;</span>
                         </li>)
                     }
