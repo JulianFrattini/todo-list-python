@@ -15,7 +15,7 @@ function TaskCreator(props) {
         // create a forms object
         const data = new URLSearchParams();
         data.append('title', title);
-        data.append('description', '(add a description here)');
+        data.append('description', '(add a todoTitle here)');
         data.append('userid', props.userid);
         data.append('url', url);
         data.append('todos', ['Watch video']);
