@@ -15,7 +15,8 @@ from bson.objectid import ObjectId
 class DAO:
 
     def __init__(self, collection_name: str):
-        """Establish a data access object to a collection of the given name in the MongoDB database as specified in the environment variables. When the collection is first creted, it will be associated to a validator (see https://www.mongodb.com/docs/manual/core/schema-validation/) to ensure some basic data compliance.
+        """Establish a data access object to a collection of the given name in the MongoDB database as specified in the environment variables. When the collection is first creted, it will be associated to a validator 
+        (see https://www.mongodb.com/docs/manual/core/schema-validation/) to ensure some basic data compliance.
 
         parameters:
             collection_name -- the name of the collection (a collection validator of the same name must be available)
@@ -40,7 +41,11 @@ class DAO:
         self.collection = database[collection_name]
 
     def create(self, data: dict):
-        """Creates a new document in the collection associated to this data access object. The creation of a new document must comply to the corresponding validator, which defines the data structure of the collection. In particular, the validator has to make sure that: (1) the data for the new object contains all required properties, (2) every property complies to the bson data type constraint (see https://www.mongodb.com/docs/manual/reference/bson-types/, though we currently only consider Strings and Booleans), (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
+        """Creates a new document in the collection associated to this data access object. The creation of a new document must comply to the corresponding validator, which defines the data structure of the collection.
+         In particular, the validator has to make sure that: 
+         (1) the data for the new object contains all required properties, 
+         (2) every property complies to the bson data type constraint (see https://www.mongodb.com/docs/manual/reference/bson-types/, though we currently only consider Strings and Booleans), 
+         (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
 
         parameters:
             data -- a dict containing key-value pairs compliant to the validator
