@@ -1,0 +1,26 @@
+<<<<<<< HEAD
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["url"],
+        "properties": {
+            "url": {
+                "bsonType": "string",
+                "description": "the url of a YouTube video must be determined"
+            }
+        }
+    }
+=======
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["url"],
+        "properties": {
+            "url": {
+                "bsonType": "string",
+                "description": "the url of a YouTube video must be determined"
+            }
+        }
+    }
+>>>>>>> origin/master
+}
