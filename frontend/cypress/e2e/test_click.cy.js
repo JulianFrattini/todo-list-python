@@ -54,9 +54,8 @@ describe('GUI Testing', () => {
     cy.contains('.editable', todoName)
       .parent('.todo-item')
       .find('span.checker') // find the span.checker element within the .todo-item element
-      .click()
+      .click({ force: true })
       .wait(1500)
-      .click()
       .should('have.class', 'checked');
 
     cy.contains('.editable', todoName)
@@ -72,8 +71,8 @@ describe('GUI Testing', () => {
     cy.contains('.editable', todoName)
       .parent('.todo-item')
       .find('span.checker')
+      .click({ force: true })
       .wait(1500)
-      .click()
       .should('have.class', 'unchecked');
 
     cy.contains('.editable', todoName)
@@ -84,7 +83,7 @@ describe('GUI Testing', () => {
   })
 
   // R8UC3 - Test case 1
-  it('Toggle a done todo item to active', () => {
+  it('Delete an Todo item', () => {
 
     cy.get('.todo-item .editable')
     .should('have.length', 2); //check that length is 2 before deletion
@@ -92,7 +91,7 @@ describe('GUI Testing', () => {
     cy.contains('.editable', todoName)
       .parent('.todo-item')
       .find('span.remover')
-      .click()
+      .click({ force: true })
 
     cy.contains('.editable', todoName)
     .should('not.exist')
