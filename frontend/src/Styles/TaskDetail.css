@@ -1,0 +1,73 @@
+/* inline form for editable objects */
+.editable {
+    cursor: text;
+}
+
+.inline-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.inline-form > input[type="text"] {
+    flex: 90%;
+    margin: 10px 10px 10px 0;
+}
+
+.inline-form > input[type="submit"] {
+    flex: 10%;
+}
+
+/* todo list */
+.todo-list > .todo-item {
+    padding: 12px 8px 12px 40px;
+    position: relative;
+}
+
+.todo-list > .todo-item:hover {
+    background-color: rgb(210, 210, 210);
+}
+
+.todo-list > .todo-item > .checker {
+    position: absolute;
+    left: 16px;
+    cursor: pointer;
+}
+
+.todo-list > .todo-item > .checker.unchecked {
+    top: 14px;
+    height: 10px;
+    width: 10px;
+    
+    border: 1px solid black;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.todo-list > .todo-item > .checker.checked {
+    top: 10px;
+    height: 15px;
+    width: 7px;
+
+    content: '';
+    border-color: black;
+    border-style: solid;
+    border-width: 0px 2px 2px 0px;
+    transform: rotate(45deg);
+}
+
+.todo-list > .todo-item > .checker.checked + .editable {
+    text-decoration: line-through;
+}
+
+.todo-list > .todo-item > .remover {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 11px 16px 11px 16px;
+    cursor: pointer;
+}
+
+.todo-list > .todo-item > .remover:hover {
+    background-color: var(--bg-bad);
+    color: white;
+}
