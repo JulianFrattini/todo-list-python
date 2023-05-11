@@ -99,7 +99,7 @@ class Controller:
         """
 try:
             result = self.dao.delete(id=id)
-                return result
+    return result
 except Exception as e:
 
     from  src.util.dao import DAO
