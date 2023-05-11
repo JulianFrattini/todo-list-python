@@ -80,5 +80,4 @@ class TestNamespaces:
         # TODO: patch the fullmatch method of the regex library
         with patch('?') as mockfullmatch:
             mockfullmatch.return_value = True
-             origin/master
             assert uc.get_user_by_email(email='jane.doe') == user
