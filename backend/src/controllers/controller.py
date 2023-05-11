@@ -1,4 +1,3 @@
-
 from  src.util.dao import DAO
 
 class Controller:
@@ -102,6 +101,3 @@ class Controller:
             return result
         except Exception as e:
             raise
-    
-    from  src.util.dao import DAO
-
