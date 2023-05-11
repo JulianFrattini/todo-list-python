@@ -29,27 +29,28 @@ json_validator = {
 }
 
 @pytest.fixture()
+@pytest.mark.integration
 def daoSetUp():
     with patch("src.util.dao.getValidator") as mock_get_validator:
         mock_get_validator.return_value = json_validator
         dao = DAO("test_unauthenticated")
         yield dao
-
+@pytest.mark.integration
 def test_create_valid_object(daoSetUp):
     valid_data = {"product_name": "ProductA", "price": 25.99, "categories": ["Electronics", "Gadgets"], "is_active": True}
     result = daoSetUp.create(valid_data)
     assert result is not None
-
+@pytest.mark.integration
 def test_create_missing_required_properties(daoSetUp):
     invalid_data = {"product_name": "ProductB", "categories": ["Electronics", "Gadgets"]}
     with pytest.raises(Exception):
         daoSetUp.create(invalid_data)
-
+@pytest.mark.integration
 def test_create_incorrect_data_types(daoSetUp):
     invalid_data = {"product_name": "ProductC", "price": "100.0", "categories": ["Electronics", "Gadgets"], "is_active": "True"}
     with pytest.raises(Exception):
         daoSetUp.create(invalid_data)
-
+@pytest.mark.integration
 def test_create_unique_ids(daoSetUp):
     data1 = {"product_name": "ProductD", "price": 45.0, "categories": ["Electronics", "Gadgets"], "is_active": True}
     data2 = {"product_name": "ProductE", "price": 55.0, "categories": ["Electronics", "Gadgets"], "is_active": False}
@@ -58,7 +59,7 @@ def test_create_unique_ids(daoSetUp):
     assert result1["_id"] is not None
     assert result2["_id"] is not None
     assert result1["_id"] != result2["_id"]
-
+@pytest.mark.integration
 def test_create_no_valid_db_connection(daoSetUp):
     test_data = {"product_name": "ProductF", "price": 75.99, "categories": ["Electronics", "Gadgets"], "is_active": True}
     with patch("src.util.dao.MongoClient") as mock_client:
