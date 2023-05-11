@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from src.util.dao import DAO
 
 daos = {}
@@ -14,7 +13,7 @@ def getDao(collection_name: str):
     """
     if collection_name not in daos:
         daos[collection_name] = DAO(collection_name=collection_name)
-=======
+
 from src.util.dao import DAO
 
 daos = {}
@@ -30,5 +29,4 @@ def getDao(collection_name: str):
     """
     if collection_name not in daos:
         daos[collection_name] = DAO(collection_name=collection_name)
->>>>>>> origin/master
     return daos[collection_name]
