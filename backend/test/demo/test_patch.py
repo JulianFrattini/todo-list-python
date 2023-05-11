@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import pytest
 import unittest.mock as mock
 from unittest.mock import patch
@@ -42,7 +42,7 @@ class TestValidationHelper2:
     @pytest.mark.demo
     def test_validateAge(self, sut):
         validationresult = sut.validateAge(userid=None)
-=======
+
 import pytest
 import unittest.mock as mock
 from unittest.mock import patch
@@ -86,5 +86,4 @@ class TestValidationHelper2:
     @pytest.mark.demo
     def test_validateAge(self, sut):
         validationresult = sut.validateAge(userid=None)
->>>>>>> origin/master
         assert validationresult == 'valid'
