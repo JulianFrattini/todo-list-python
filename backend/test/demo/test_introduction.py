@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+ HEAD
 import pytest
 import unittest.mock as mock
 
@@ -23,7 +23,7 @@ def sut(age: int):
 def test_validateAge(sut, expected):
     validationresult = sut.validateAge(userid=None)
     assert validationresult == expected
-=======
+
 import pytest
 import unittest.mock as mock
 
@@ -48,4 +48,4 @@ def sut(age: int):
 def test_validateAge(sut, expected):
     validationresult = sut.validateAge(userid=None)
     assert validationresult == expected
->>>>>>> origin/master
+origin/master
