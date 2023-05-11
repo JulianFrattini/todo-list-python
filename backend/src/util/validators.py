@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import json
 
 validators = {}
@@ -14,7 +13,7 @@ def getValidator(collection_name: str):
     if collection_name not in validators:
         with open(f'./src/static/validators/{collection_name}.json', 'r') as f:
             validators[collection_name] = json.load(f)
-=======
+
 import json
 
 validators = {}
@@ -30,5 +29,5 @@ def getValidator(collection_name: str):
     if collection_name not in validators:
         with open(f'./src/static/validators/{collection_name}.json', 'r') as f:
             validators[collection_name] = json.load(f)
->>>>>>> origin/master
+ origin/master
     return validators[collection_name]
