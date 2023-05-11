@@ -135,4 +135,4 @@ def test_duplicate_email_addresses():
 
     result = uc.get_user_by_email(email)
     assert result == {'email': email, 'name': 'Test User'}
-     origin/master
+     
