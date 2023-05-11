@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pytest
 import json, os
 
@@ -32,7 +31,6 @@ class TestFileHandler:
         content = sut.getContent()
         assert content['Name'] == self.json_string['Name']
 
-=======
 import pytest
 import json, os
 
@@ -66,4 +64,4 @@ class TestFileHandler:
         content = sut.getContent()
         assert content['Name'] == self.json_string['Name']
 
->>>>>>> origin/master
+origin/master
