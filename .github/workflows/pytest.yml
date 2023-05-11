@@ -25,10 +25,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
         
-      - name: Unit Test
+      - name: Unit Tests
         run: |
-          python -m pytest -m 
+          python -m pytest -m unit
 
       - name: Integration Tests
         run:
-          python -m pytest -integration
+          python -m pytest -m integration
