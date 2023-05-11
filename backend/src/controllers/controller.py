@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from  src.util.dao import DAO
 
 class Controller:
@@ -101,7 +101,7 @@ class Controller:
             result = self.dao.delete(id=id)
             return result
         except Exception as e:
-=======
+
 from  src.util.dao import DAO
 
 class Controller:
@@ -204,5 +204,5 @@ class Controller:
             result = self.dao.delete(id=id)
             return result
         except Exception as e:
->>>>>>> origin/master
+
             raise
