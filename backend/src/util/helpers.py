@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from src.controllers.usercontroller import UserController
 from src.util.dao import DAO
 import random
@@ -75,7 +74,6 @@ def diceroll():
 
     if number >= 4:
         return True
-=======
 from src.controllers.usercontroller import UserController
 from src.util.dao import DAO
 import random
@@ -152,5 +150,4 @@ def diceroll():
 
     if number >= 4:
         return True
->>>>>>> origin/master
     return False
