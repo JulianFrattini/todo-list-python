@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # coding=utf-8
 import os
 
@@ -182,7 +181,7 @@ class DAO:
             dict -- the document converted to JSON
         """
         return json.loads(json_util.dumps(data))
-=======
+
 # coding=utf-8
 import os
 
@@ -366,4 +365,4 @@ class DAO:
             dict -- the document converted to JSON
         """
         return json.loads(json_util.dumps(data))
->>>>>>> origin/master
+origin/master
