@@ -200,9 +200,8 @@ class Controller:
         raises:
             Exception -- in case the database operation fails, raise an exception
         """
-        try:
+     try:
             result = self.dao.delete(id=id)
             return result
         except Exception as e:
-
             raise
