@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pytest
 import random
 from unittest.mock import patch
@@ -21,7 +20,7 @@ def diceroll():
 def test_diceroll_success(value, expected):
     with patch('random.randint') as mockrandint:
         mockrandint.return_value = value
-=======
+
 import pytest
 import random
 from unittest.mock import patch
@@ -44,5 +43,5 @@ def diceroll():
 def test_diceroll_success(value, expected):
     with patch('random.randint') as mockrandint:
         mockrandint.return_value = value
->>>>>>> origin/master
+ origin/master
         assert diceroll() == expected
