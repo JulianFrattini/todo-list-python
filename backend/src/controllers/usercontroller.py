@@ -2,7 +2,7 @@ from src.controllers.controller import Controller
 from src.util.dao import DAO
 import pytest
 import re
-
+#test
 emailValidator = re.compile(r'.*@.*')
 
 class UserController(Controller):
