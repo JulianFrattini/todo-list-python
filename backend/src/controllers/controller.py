@@ -84,7 +84,7 @@ class Controller:
         except Exception as e:
             raise
 
-       def delete(self, id: str):
+    def delete(self, id: str):
         """Delete an object from the respective collection of the database
 
         parameters:
@@ -102,6 +102,6 @@ class Controller:
             return result
         except Exception as e:
             raise
-            
+    
     from  src.util.dao import DAO
 
