@@ -43,5 +43,4 @@ def diceroll():
 def test_diceroll_success(value, expected):
     with patch('random.randint') as mockrandint:
         mockrandint.return_value = value
- origin/master
         assert diceroll() == expected
