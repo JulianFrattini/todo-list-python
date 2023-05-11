@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from src.controllers.controller import Controller
 from src.util.dao import DAO
 
@@ -44,7 +43,7 @@ class UserController(Controller):
             update_result = super().update(id=id, data={'$set': data})
             return update_result
         except Exception as e:
-=======
+
 from src.controllers.controller import Controller
 from src.util.dao import DAO
 
@@ -90,5 +89,4 @@ class UserController(Controller):
             update_result = super().update(id=id, data={'$set': data})
             return update_result
         except Exception as e:
->>>>>>> origin/master
             raise
