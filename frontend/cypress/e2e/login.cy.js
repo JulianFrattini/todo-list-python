@@ -21,6 +21,7 @@ describe('Logging into the system', () => {
           email = user.email
         })
       })
+    cy.log("uid: " + uid)
   })
 
   beforeEach(function () {
@@ -41,16 +42,35 @@ describe('Logging into the system', () => {
       .click()
   })
 
-  it("add todo to task1", () => {
-    cy.get(".container-element:nth-of-type(1)")
-      .click()
-    cy.get("popup")
+  it('Add todo to task1', () => {
+    // open task
+    // cy.get(".container-element:nth-of-type(1)").click();
+    // cy.get(".popup").contains("Task 1");
+  
+    // // make sure you cant add empty todo
+    // cy.get(".inline-form input[type=submit]").should("be.disabled");
+  
+    // // write todo text
+    // cy.get(".inline-form input[type=text]").type("My TODO item");
+  
+    // // click add
+    // cy.get(".inline-form input[type=submit]").click();
+
+    // // make sure added TODO is last
+    // cy.get(".todo-list:last-of-type")
+    //   .contains("My TODO item");
   })
 
-  it("add todo to task2", () => {
-    cy.get(".container-element:nth-of-type(2)")
-      .click()
-    cy.get("popup")
+  it("Check of todo item", () => {
+    // open task
+    // cy.get(".container-element:nth-of-type(1)")
+    //   .click();
+    // cy.get(".popup")
+    //   .contains("Task 1");
+
+    // cy.get(".todo-item:nth-of-type(1) .checker")
+    //   .click()
+    //   .get(".todo-item:nth-of-type(1) .unchecked")
   })
 
 //   it('login to the system with an existing account', () => {
