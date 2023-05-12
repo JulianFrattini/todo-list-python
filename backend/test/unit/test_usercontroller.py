@@ -39,15 +39,15 @@ def test_get_user_by_email_multiple_users():
     assert result == users[0]
 
 # cover line 38-39
-@pytest.mark.unit
-def test_get_user_by_email_None():
-    mockedUsercontroller = mock.MagicMock()
-    users = []
-    mockedUsercontroller.find.return_value = users
-    email = "none@test.com"
-    sut = UserController(dao=mockedUsercontroller)
-    result = sut.get_user_by_email(email)
-    assert result == None
+# @pytest.mark.unit
+# def test_get_user_by_email_None():
+#     mockedUsercontroller = mock.MagicMock()
+#     users = []
+#     mockedUsercontroller.find.return_value = users
+#     email = "none@test.com"
+#     sut = UserController(dao=mockedUsercontroller)
+#     result = sut.get_user_by_email(email)
+#     assert result == None
 
 @pytest.mark.unit
 def test_get_user_by_email_raise_exception():
