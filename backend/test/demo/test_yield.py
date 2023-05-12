@@ -64,4 +64,3 @@ class TestFileHandler:
         content = sut.getContent()
         assert content['Name'] == self.json_string['Name']
 
-origin/master

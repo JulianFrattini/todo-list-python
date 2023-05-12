@@ -13,4 +13,4 @@ def getDao(collection_name: str):
     """
     if collection_name not in daos:
         daos[collection_name] = DAO(collection_name=collection_name)
-    return daos[collection_name]s
+    return daos[collection_name]
