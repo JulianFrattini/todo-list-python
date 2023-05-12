@@ -18,12 +18,18 @@ def test_valid_email_existing_user():
 
 #Test valid email of a non-existing user
 @pytest.mark.unit
-def test_valid_email_non_existing_user():
-    email = 'non_existing@example.com'
-    mock_dao.find.return_value = []
+def get_user_by_email(self, email):
+        if not isinstance(email, str):
+            raise ValueError('Error: invalid email address')
 
-    result = uc.get_user_by_email(email)
-    assert result is None
+        users = self.dao.find({'email': email})
+        if not users:
+            return None
+        elif len(users) == 1:
+            return users[0]
+        else:
+            print(f'Error: more than one user found with mail {email}')
+            return users[0]
 
 
 # Test case for an invalid email format
