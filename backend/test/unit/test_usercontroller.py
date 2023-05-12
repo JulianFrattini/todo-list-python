@@ -3,7 +3,6 @@ from src.controllers.usercontroller import UserController
 from src.util.dao import DAO
 import unittest.mock as mock
 
-# unit test
 @pytest.mark.unit
 def test_get_user_by_email_valid():
     mockedUsercontroller = mock.MagicMock()
