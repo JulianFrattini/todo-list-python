@@ -27,8 +27,8 @@ jobs:
 
       - name: Unit Tests
         run:
-          python -m pytest -m unit
+          pytest -m unit
 
       - name: Integration Tests
         run:
-          python -m pytest -m integration
+          pytest -m integration
