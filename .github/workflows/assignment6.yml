@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup Python 3.10 
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v3
         with:
           python-version: "3.10" 
           cache: "pip" 
@@ -23,8 +23,7 @@ jobs:
       - name: Install dependencies 
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          cache-dependency-path: backend/requirements.pip
+          pip install -r ./backend/requirements.txt
 
       - name: Unit tests 
         run: |
