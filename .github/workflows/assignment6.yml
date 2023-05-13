@@ -5,16 +5,12 @@ on:
     branches: ["master"] 
   pull_request: 
     branches: ["master"] 
-
-defaults:
-  run:
-    working-directory: ./backend
     
 jobs:
   build:
   
     runs-on: ubuntu-latest 
-
+    working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
 
