@@ -4,7 +4,6 @@ from src.util.dao import DAO
 import re
 
 ## modified email_Validiator 
-
 emailValidator = re.compile(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$')
 
 
