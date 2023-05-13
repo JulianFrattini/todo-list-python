@@ -1,9 +1,9 @@
 name: unitTestWorkflow # Name of the workflow
 
 on:
-  [push]: # Event that triggers the workflow
+  push: # Event that triggers the workflow
     branches: [master] # Branches to run the workflow on
-  [pull_request]: # Event that triggers the workflow
+  pull_request: # Event that triggers the workflow
     branches: [master] # Branches to run the workflow on
 
 jobs:
