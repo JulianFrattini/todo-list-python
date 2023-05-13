@@ -5,12 +5,12 @@ on:
     branches: ["master"] 
   pull_request: 
     branches: ["master"] 
-    
+
 jobs:
   build:
   
     runs-on: ubuntu-latest 
-    working-directory: ./backend
+
     steps:
       - uses: actions/checkout@v3
 
@@ -29,3 +29,8 @@ jobs:
       - name: Unit tests 
         run: |
           python -m pytest -m task2
+
+defaults:
+  run:
+    working-directory: ./backend
+    
