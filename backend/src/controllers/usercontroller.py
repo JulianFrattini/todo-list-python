@@ -2,6 +2,7 @@ from src.controllers.controller import Controller
 from src.util.dao import DAO
 
 import re
+# update validator
 emailValidator = re.compile(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$')
 
 class UserController(Controller):
