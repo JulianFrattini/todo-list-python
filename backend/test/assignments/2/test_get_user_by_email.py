@@ -71,7 +71,7 @@ def test_nonexistent_email_returns_none(dao_mock, controller):
 
     # Assert
     assert result is None
-    
+
 @pytest.mark.unit
 def test_raise_exception_Database_fails(dao_mock, controller):
     dao_mock.find.side_effect = Exception("Database operation fails.")

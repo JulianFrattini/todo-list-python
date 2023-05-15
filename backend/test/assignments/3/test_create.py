@@ -40,7 +40,7 @@ def mock_validator():
         yield dao
         dao.collection.drop()
 
-@pytest.mark.unit
+@pytest.mark.integration
 def test_create_user_with_valid_email(mock_validator):
     # Call the create method and check the return value
     new_user = {
@@ -55,7 +55,7 @@ def test_create_user_with_valid_email(mock_validator):
     assert result['lastName'] == new_user['lastName']
     assert result['email'] == new_user['email']
 
-@pytest.mark.unit
+@pytest.mark.integration
 def test_create_user_with_same_email(mock_validator):
     # Call the create method and check the return value
 
@@ -71,7 +71,7 @@ def test_create_user_with_same_email(mock_validator):
         mock_validator.create(new_user)
     assert isinstance(e.value, WriteError)
 
-@pytest.mark.unit
+@pytest.mark.integration
 def test_create_user_with_invalid_email_type(mock_validator):
     # Call the create method and check the return value
     new_user = {
@@ -85,7 +85,7 @@ def test_create_user_with_invalid_email_type(mock_validator):
         mock_validator.create(new_user)
     assert isinstance(e.value, WriteError)
 
-@pytest.mark.unit
+@pytest.mark.integration
 def test_create_user_with_missing_property(mock_validator):
     # Call the create method and check the return value
 
