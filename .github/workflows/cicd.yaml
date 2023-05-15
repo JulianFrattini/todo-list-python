@@ -31,7 +31,8 @@ jobs:
         working-directory: ./backend
         run: pip install -r requirements.pip
 
-      - name: Run pytest
-        run: |
-          pytest ./backend/test/assignments/2/test_get_user_by_email.py
-          pytest ./backend/test/assignments/3/test_create.py
+      - name: Test Get User By Email
+        run: pytest ./backend/test/assignments/2/test_get_user_by_email.py
+
+      - name: Test Create
+        run: pytest ./backend/test/assignments/3/test_create.py
