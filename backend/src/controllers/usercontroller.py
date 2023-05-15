@@ -9,12 +9,12 @@ class UserController(Controller):
         super().__init__(dao=dao)
 
     def get_user_by_email(self, email: str):
-        """Given a valid email address of an existing account, return the user object contained in the database associated 
+        """Given a valid email address of an existing account, return the user object contained in the database associated
         to that user. For now, do not assume that the email attribute is unique. Output an error message containing the email
         address if the search returns multiple users.
-        
+
         parameters:
-            email -- an email address string 
+            email -- an email address string
 
         returns:
             user -- the user object associated to that email address (if multiple users are associated to that email: return the first one)
@@ -30,6 +30,8 @@ class UserController(Controller):
 
         try:
             users = self.dao.find({'email': email})
+            if len(users) == 0:
+                return None
             if len(users) == 1:
                 return users[0]
             else:
