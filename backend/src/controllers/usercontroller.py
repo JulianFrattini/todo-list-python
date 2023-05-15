@@ -30,6 +30,8 @@ class UserController(Controller):
 
         try:
             users = self.dao.find({'email': email})
+            if not users:
+                return None
             if len(users) == 1:
                 return users[0]
             else:
