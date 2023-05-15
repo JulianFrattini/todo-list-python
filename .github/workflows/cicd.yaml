@@ -32,7 +32,7 @@ jobs:
         run: pip install -r requirements.pip
 
       - name: Test Create
-        run: pytest ./backend/test/assignments/3/test_create.py
+        run: pytest ./test/assignments/3/test_create.py
 
       - name: Test Get User By Email
-        run: pytest ./backend/test/assignments/2/test_get_user_by_email.py
+        run: pytest ./test/assignments/2/test_get_user_by_email.py
