@@ -7,7 +7,9 @@ on:
   pull_request:
     branches:
       - master
-
+defaults:
+  run:
+    working-directory: ./backend
 jobs:
   test:
     name: Run tests
@@ -28,11 +30,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        working-directory: ./backend
         run: pip install -r requirements.pip
 
-      - name: Test Create
-        run: pytest ./backend/test/assignments/3/test_create.py
-
-      - name: Test Get User By Email
-        run: pytest ./backend/test/assignments/2/test_get_user_by_email.py
+      - name: Unit Tests
+        run: python -m pytest -m unit
