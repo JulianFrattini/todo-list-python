@@ -2,7 +2,9 @@ from src.controllers.controller import Controller
 from src.util.dao import DAO
 
 import re
-emailValidator = re.compile(r'.*@.*')
+#emailValidator = re.compile(r'.*@.*')
+emailValidator = re.compile(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$')
+
 
 class UserController(Controller):
     def __init__(self, dao: DAO):
@@ -12,7 +14,7 @@ class UserController(Controller):
         """Given a valid email address of an existing account, return the user object contained in the database associated 
         to that user. For now, do not assume that the email attribute is unique. Output an error message containing the email
         address if the search returns multiple users.
-        
+
         parameters:
             email -- an email address string 
 
@@ -32,6 +34,8 @@ class UserController(Controller):
             users = self.dao.find({'email': email})
             if len(users) == 1:
                 return users[0]
+            elif len(users) == 0:
+                return None
             else:
                 print(f'Error: more than one user found with mail {email}')
                 return users[0]
