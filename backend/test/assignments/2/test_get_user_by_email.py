@@ -11,6 +11,7 @@ def controller(dao_mock):
     return UserController(dao=dao_mock)
 
 #   Test if user[0] is returned when len is 1
+@pytest.mark.unit
 def test_valid_email_returns_user_object_1(dao_mock, controller):
     # Arrange
     email = "test@example.com"
@@ -23,7 +24,7 @@ def test_valid_email_returns_user_object_1(dao_mock, controller):
     # Assert
     assert result == users[0]
 
-
+@pytest.mark.unit
 def test_multiple_users_with_same_email_returns_first_user_object(dao_mock, controller):
     # Arrange
     email = "test@example.com"
@@ -36,6 +37,7 @@ def test_multiple_users_with_same_email_returns_first_user_object(dao_mock, cont
     # Assert
     assert result == users[0]
 
+@pytest.mark.unit
 def test_invalid_email_raises_value_error(dao_mock, controller):
     # Arrange
     email = "invalid.email.se"
@@ -45,7 +47,8 @@ def test_invalid_email_raises_value_error(dao_mock, controller):
     with pytest.raises(ValueError) as e:
         controller.get_user_by_email(email)
     assert str(e.value) == 'Error: invalid email address'
-    
+
+@pytest.mark.unit
 def test_empty_email_raises_value_error(dao_mock, controller):
     # Arrange
     email = ""
@@ -56,6 +59,7 @@ def test_empty_email_raises_value_error(dao_mock, controller):
         controller.get_user_by_email(email)
     assert str(e.value) == 'Error: invalid email address'
 
+@pytest.mark.unit
 def test_nonexistent_email_returns_none(dao_mock, controller):
     # Arrange
     email = "test@example.com"
@@ -67,7 +71,8 @@ def test_nonexistent_email_returns_none(dao_mock, controller):
 
     # Assert
     assert result is None
-
+    
+@pytest.mark.unit
 def test_raise_exception_Database_fails(dao_mock, controller):
     dao_mock.find.side_effect = Exception("Database operation fails.")
     email = "test@example.com"
