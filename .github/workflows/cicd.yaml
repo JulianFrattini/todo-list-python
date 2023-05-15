@@ -22,6 +22,11 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
       - name: Install dependencies
         working-directory: ./backend
         run: pip install -r requirements.pip
@@ -30,4 +35,3 @@ jobs:
         run: |
           pytest ./backend/test/assignments/2/test_get_user_by_email.py
           pytest ./backend/test/assignments/3/test_create.py
-
