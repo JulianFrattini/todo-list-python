@@ -1,10 +1,11 @@
+let uid // user id
+let name // name of the user (firstName + ' ' + lastName)
+let email // email of the user
+let counter = 1
+
 
 describe('Logging into the system', () => {
   // define variables that we need on multiple occasions
-  let uid // user id
-  let name // name of the user (firstName + ' ' + lastName)
-  let email // email of the user
-  let counter = 1
 
   before(function () {
     // create a fabricated user from a fixture
@@ -21,7 +22,6 @@ describe('Logging into the system', () => {
           email = user.email
         })
       })
-    cy.log("uid: " + uid)
   })
 
   beforeEach(function () {
@@ -44,52 +44,55 @@ describe('Logging into the system', () => {
 
   it('Add todo to task1', () => {
     // open task
-    // cy.get(".container-element:nth-of-type(1)").click();
-    // cy.get(".popup").contains("Task 1");
+    cy.get(".container-element:nth-of-type(1) a").click();
+    cy.get(".popup").contains("Task 1");
   
-    // // make sure you cant add empty todo
-    // cy.get(".inline-form input[type=submit]").should("be.disabled");
+    // make sure you cant add empty todo
+    cy.get(".inline-form input[type=submit]").should("be.disabled");
   
-    // // write todo text
-    // cy.get(".inline-form input[type=text]").type("My TODO item");
+    // write todo text
+    cy.get(".inline-form input[type=text]").type("My TODO item");
   
-    // // click add
-    // cy.get(".inline-form input[type=submit]").click();
+    // click add
+    cy.get(".inline-form input[type=submit]").click();
 
-    // // make sure added TODO is last
-    // cy.get(".todo-list:last-of-type")
-    //   .contains("My TODO item");
+    // make sure added TODO is last
+    cy.get(".todo-list:last-of-type")
+      .contains("My TODO item");
   })
 
   it("Check of todo item", () => {
     // open task
-    // cy.get(".container-element:nth-of-type(1)")
-    //   .click();
-    // cy.get(".popup")
-    //   .contains("Task 1");
+    cy.get(".container-element:nth-of-type(2)")
+      .click();
+    cy.get(".popup")
+      .contains("Task 2");
 
-    // cy.get(".todo-item:nth-of-type(1) .checker")
-    //   .click()
-    //   .get(".todo-item:nth-of-type(1) .unchecked")
+    cy.get(".todo-item:nth-of-type(1) .checker")
+      .click()
+      // .get(".todo-item:nth-of-type(1) .unchecked")
   })
 
-//   it('login to the system with an existing account', () => {
-//     // detect a div which contains "Email Address", find the input and type (in a declarative way)
-//     cy.contains('div', 'Email Address')
-//       .find('input[type=text]')
-//       .type(email)
-//     // alternative, imperative way of detecting that input field
-//     //cy.get('.inputwrapper #email')
-//     //    .type(email)
+  it("test test", () => {
+    cy.get(".container-element:nth-of-type(3)")
+      .click();
+    cy.get(".popup")
+      .contains("Task 3");
 
-//     // submit the form on this page
-//     cy.get('form')
-//       .submit()
+    // make sure 1 task(+ form) exists
+    cy.get(".todo-list")
+      .children()
+      .should("have.length", 2)
 
-//     // assert that the user is now logged in
-//     cy.get('h1')
-//       .should('contain.text', 'Your tasks, ' + name)
-//   })
+    // remove task
+    cy.get(".todo-item .remover")
+      .click()
+
+    // make sure 0 tasks(+ form) exists
+    cy.get(".todo-list")
+      .children()
+      .should("have.length", 1)
+  })
 
   after(function () {
     // clean up by deleting the user from the database
