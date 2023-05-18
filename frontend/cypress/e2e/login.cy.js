@@ -63,32 +63,37 @@ describe('Logging into the system', () => {
 
   it("Check of todo item", () => {
     // open task
-    cy.get(".container-element:nth-of-type(2)")
+    cy.get(".container-element:nth-of-type(2) a")
       .click();
     cy.get(".popup")
       .contains("Task 2");
 
     cy.get(".todo-item:nth-of-type(1) .checker")
       .click()
-      // .get(".todo-item:nth-of-type(1) .unchecked")
+      .get(".todo-item:nth-of-type(1) .unchecked")
   })
 
-  it("test test", () => {
-    cy.get(".container-element:nth-of-type(3)")
+  it("Remove task", () => {
+    cy.get(".container-element:nth-of-type(3) a")
       .click();
     cy.get(".popup")
       .contains("Task 3");
 
-    // make sure 1 task(+ form) exists
+    // make sure 1 todo(+ form) exists
     cy.get(".todo-list")
       .children()
       .should("have.length", 2)
 
-    // remove task
-    cy.get(".todo-item .remover")
+    // remove todo
+    cy.get(".todo-item:nth-of-type(1) .remover")
+      .contains("✖")
       .click()
 
-    // make sure 0 tasks(+ form) exists
+    cy.get(".todo-item:nth-of-type(1) .remover")
+      .contains("✖")
+      .click()
+    
+    // make sure 0 todos(+ form) exists
     cy.get(".todo-list")
       .children()
       .should("have.length", 1)
