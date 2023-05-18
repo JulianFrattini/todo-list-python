@@ -88,9 +88,6 @@ describe('Logging into the system', () => {
     cy.get(".todo-item:nth-of-type(1) .remover")
       .contains("✖")
       .click()
-
-    cy.get(".todo-item:nth-of-type(1) .remover")
-      .contains("✖")
       .click()
     
     // make sure 0 todos(+ form) exists
