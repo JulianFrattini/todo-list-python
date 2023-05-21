@@ -3,7 +3,7 @@ import random
 from unittest.mock import patch
 
 def diceroll():
-    """Roll a simple six sided die and see if you win.
+    """Rolls a simple six sided die and see if you win.
 
     returns:
         True -- if the rolled number is higher than a 4
