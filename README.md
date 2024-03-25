@@ -1,7 +1,8 @@
 # Edutask: a Training System for PA1417
 
 ## Group1
-* Nadja Spångberg
+* Nadja Spångberg (nasp22)
+* Gabriel "Bruffe" Rahm (gara20)
 
 [![GitHub](https://img.shields.io/github/license/JulianFrattini/edutask)](./LICENSE)
 
