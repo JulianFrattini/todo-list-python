@@ -92,5 +92,6 @@ This work (source code) is available under [MIT license](./LICENSE).
 
 
 Group number assigned on Canvas: 5
+
 David Dahlgren
 Déspina Platakidou
