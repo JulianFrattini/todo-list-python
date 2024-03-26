@@ -12,6 +12,6 @@ COPY public /backend/public/
 
 EXPOSE 5000
 
-ENV HOST=0.0.0.0
+ENV HOST=127.0.0.1
 
 CMD npm run build && npm run production

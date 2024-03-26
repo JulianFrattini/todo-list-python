@@ -89,3 +89,7 @@ The following issues are known and may require attention:
 The backend service was derived from [Marcos Vinícius](https://github.com/marcosvbras) project [todo-list-python](https://github.com/marcosvbras/todo-list-python), which is licenced under [Apache-2.0](https://github.com/marcosvbras/todo-list-python?tab=Apache-2.0-1-ov-file#readme).
 For all other additional content, Copyright © 2023 by Julian Frattini. 
 This work (source code) is available under [MIT license](./LICENSE).
+
+
+Group number: 5
+David Dahlgren
