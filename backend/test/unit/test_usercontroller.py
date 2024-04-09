@@ -12,7 +12,7 @@ user = {
 
 
 @pytest.mark.unit
-def test_get_user_by_email_valid_match_1_ok(self):
+def test_get_user_by_email_valid_match_one_nofail():
     """
     Tests get_user_by_email method with valid email.
     Exactly 1 user match. No database failure.
@@ -26,7 +26,7 @@ def test_get_user_by_email_valid_match_1_ok(self):
     assert sut.get_user_by_email(email=valid_email) == user
 
 @pytest.mark.unit
-def test_get_user_by_email_valid_nomatch_ok(self):
+def test_get_user_by_email_valid_nomatch_nofail():
     """
     Tests get_user_by_email method with valid email.
     No user match. No database failure.
