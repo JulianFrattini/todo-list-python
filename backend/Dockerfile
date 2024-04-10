@@ -13,7 +13,13 @@ COPY requirements.pip requirements.pip
 
 RUN pip3 install -r requirements.pip
 
-COPY . .
+# COPY . .
+
+COPY src src
+COPY .env .env
+COPY main.py main.py
+COPY conftest.py conftest.py
+COPY pytest.ini pytest.ini
 
 # ENV FLASK_BIND_IP=0.0.0.0
 # ENV MONGO_URL=mongodb://dockerUser:dockerPass@mongodb:27017/edutaskDb
