@@ -9,4 +9,7 @@ Once all packages are installed, you can start the server from the root folder b
 
 > python ./main.py
 
-The server can then be accessed at http://localhost:5000. Note however that the database must be running in order for the server to function correctly.
+The server can then be accessed at http://localhost:5000. Note however that the database must be running in order for the server to function correctly.  
+
+In order to run tests inside Docker container, after starting container execute:
+> docker exec -it edutask-backend bash
