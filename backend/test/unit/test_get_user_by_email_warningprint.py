@@ -11,23 +11,24 @@ where email address matches more than 1 user.
 In all other cases no message should be printed.
 """
 
+invalid_email = "invalidemail.com"
 valid_email = 'jane.doe@email.com'
 user = {
     'firstName': 'Jane',
-    'email': 'jane.doe@email.com'
+    'email': valid_email
 }
 second_user = {
     'firstName': 'Hanna',
-    'email': 'jane.doe@email.com'
+    'email': valid_email
 }
-# mockedDAO = MagicMock()
-# sut = UserController(dao=mockedDAO)
+
 
 @pytest.fixture
 def sut():
     mockedDAO = MagicMock()
     mockedsut = UserController(dao=mockedDAO)
     return mockedsut
+
 
 @pytest.mark.unit
 def test_get_user_by_email_match_two_print(sut, capsys):
@@ -59,9 +60,8 @@ def test_get_user_by_email_match_no_print(sut, capsys, user_email, user_array):
     In none of these cases should the
     print-function have been called
     """
-    # mockedDAO.find.return_value = user_array
-    sut.dao.find.return_value = user_array
 
+    sut.dao.find.return_value = user_array
     sut.get_user_by_email(email=user_email)
     printed = capsys.readouterr()
 
@@ -80,24 +80,31 @@ def test_get_user_by_email_invalid_no_print(sut, capsys):
     # ValueError is raised when the function
     # is called with invalid email
     with pytest.raises(ValueError):
-        sut.get_user_by_email(email="invalidemail.com")
+        sut.get_user_by_email(email=invalid_email)
     printed = capsys.readouterr()
 
     assert printed.out == ""
 
+
 @pytest.mark.unit
 def test_get_user_by_email_db_failure_no_print(sut, capsys):
     """
-    Tests get_user_by_email method with valid email, there should be no printout when Exeption is raised due to database failure
+    Tests get_user_by_email method with valid email, there should be no printout when Exseption is raised due to database failure
     """
 
     sut.dao.find.side_effect = Exception("DBfailure")
-    # catch the value error so we can check
-    # that the print function is not called before
-    # ValueError is raised when the function
-    # is called with invalid email
-    with pytest.raises(Exception):
+
+    try:
         sut.get_user_by_email(email=valid_email)
+    except Exception:
+        # Using try/catch instead of pytest.raises because we do not
+        # want more than 1 assert per test.
+        # This way we can ensure that the
+        # test does not stop before our assert for no
+        # printout in case the Exception is not raised.
+        # The Exception raising is tested in separate test
+        pass
+
     printed = capsys.readouterr()
 
     assert printed.out == ""

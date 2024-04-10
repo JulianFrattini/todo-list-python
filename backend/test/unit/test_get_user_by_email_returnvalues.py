@@ -13,39 +13,44 @@ valid_email = 'jane.doe@email.com'
 user = {
     'firstName': 'Jane',
     'lastName': 'Doe',
-    'email': 'jane.doe@email.com'
+    'email': valid_email
 }
 second_user = {
     'firstName': 'Hanna',
     'lastName': 'Doe',
-    'email': 'jane.doe@email.com'
+    'email': valid_email
 }
-mockedDAO = MagicMock()
-sut = UserController(dao=mockedDAO)
+
+@pytest.fixture
+def sut():
+    mockedDAO = MagicMock()
+    mockedsut = UserController(dao=mockedDAO)
+    return mockedsut
 
 
 
 @pytest.mark.unit
-def test_get_user_by_email_no_match():
+def test_get_user_by_email_no_match(sut):
     """
     Tests get_user_by_email method with valid email.
     No user match. No database failure.
     Should return None.
     """
-    mockedDAO.find.return_value = []
+    sut.dao.find.return_value = []
 
     assert sut.get_user_by_email(email=valid_email) is None
 
+
 @pytest.mark.unit
 @pytest.mark.parametrize('user_array, exp_user', [([user], user), ([second_user, user], second_user)])
-def test_get_user_by_email_match(user_array, exp_user):
+def test_get_user_by_email_match(sut,user_array, exp_user):
     """
     Tests get_user_by_email method with email.
     Tests one match and then two matches.
     In the second case the first user should be returned
     """
     
-    mockedDAO.find.return_value = user_array
+    sut.dao.find.return_value = user_array
 
     assert sut.get_user_by_email(email=valid_email) == exp_user
 
