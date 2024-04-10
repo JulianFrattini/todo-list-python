@@ -91,5 +91,6 @@ For all other additional content, Copyright © 2023 by Julian Frattini.
 This work (source code) is available under [MIT license](./LICENSE).
 
 
-Group number: 5
-David Dahlgren
+Group number assigned on Canvas: 5
+
+David Dahlgren & Déspina Platakidou
