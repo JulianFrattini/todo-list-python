@@ -11,14 +11,10 @@ where email address matches more than 1 user.
 In all other cases no message should be printed.
 """
 
-invalid_email = "invalidemail.com"
+
 valid_email = 'jane.doe@email.com'
 user = {
     'firstName': 'Jane',
-    'email': valid_email
-}
-second_user = {
-    'firstName': 'Hanna',
     'email': valid_email
 }
 
@@ -38,7 +34,10 @@ def test_get_user_by_email_match_two_print(sut, capsys):
     Assert that a warning message containing the
     email address is printed
     """
-    # mockedDAO.find.return_value = [user, second_user]
+    second_user = {
+        'firstName': 'Hanna',
+        'email': valid_email
+    }
     sut.dao.find.return_value = [user, second_user]
 
     sut.get_user_by_email(email=valid_email)
@@ -74,7 +73,7 @@ def test_get_user_by_email_invalid_no_print(sut, capsys):
     Tests get_user_by_email method with invalid email,
     The print function should not have been called
     """
-
+    invalid_email = "invalidemail.com"
 
     try:
         sut.get_user_by_email(email=invalid_email)
