@@ -47,11 +47,11 @@ def test_get_user_by_email_match_two_print(sut, capsys):
 
 
 @pytest.mark.unit
-@pytest.mark.parametrize('user_email, user_array', [
-    (valid_email, [user]),
-    (valid_email, [])
+@pytest.mark.parametrize('user_array', [
+    ([user]),
+    ([])
     ])
-def test_get_user_by_email_valid_no_print(sut, capsys, user_email, user_array):
+def test_get_user_by_email_valid_no_print(sut, capsys,user_array):
     """
     Tests get_user_by_email method with:
     1. valid email - exactly one match,
@@ -61,7 +61,7 @@ def test_get_user_by_email_valid_no_print(sut, capsys, user_email, user_array):
     """
 
     sut.dao.find.return_value = user_array
-    sut.get_user_by_email(email=user_email)
+    sut.get_user_by_email(email=valid_email)
     printed = capsys.readouterr()
 
     assert printed.out == ""
