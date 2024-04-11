@@ -9,6 +9,12 @@ where valid email is inputted and
 no database error occurs
 """
 
+@pytest.fixture
+def sut():
+    mockedDAO = MagicMock()
+    mockedsut = UserController(dao=mockedDAO)
+    return mockedsut
+
 valid_email = 'jane.doe@email.com'
 user = {
     'firstName': 'Jane',
@@ -20,13 +26,6 @@ second_user = {
     'lastName': 'Doe',
     'email': valid_email
 }
-
-@pytest.fixture
-def sut():
-    mockedDAO = MagicMock()
-    mockedsut = UserController(dao=mockedDAO)
-    return mockedsut
-
 
 
 @pytest.mark.unit
