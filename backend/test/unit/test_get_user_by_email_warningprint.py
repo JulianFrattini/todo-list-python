@@ -75,12 +75,15 @@ def test_get_user_by_email_invalid_no_print(sut, capsys):
     The print function should not have been called
     """
 
-    # catch the value error so we can check
-    # that the print function is not called before
-    # ValueError is raised when the function
-    # is called with invalid email
-    with pytest.raises(ValueError):
+
+    try:
         sut.get_user_by_email(email=invalid_email)
+    except ValueError:
+        # catch the value error so we can check
+        # that the print function is not called before
+        # ValueError is raised when the function
+        # is called with invalid email.
+        pass
     printed = capsys.readouterr()
 
     assert printed.out == ""

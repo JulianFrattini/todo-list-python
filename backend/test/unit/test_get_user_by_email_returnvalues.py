@@ -44,7 +44,7 @@ def test_get_user_by_email_no_match(sut):
 @pytest.mark.parametrize('user_array, exp_user', [([user], user), ([second_user, user], second_user)])
 def test_get_user_by_email_match(sut,user_array, exp_user):
     """
-    Tests get_user_by_email method with email.
+    Tests get_user_by_email method with valid email.
     Tests one match and then two matches.
     In the second case the first user should be returned
     """
