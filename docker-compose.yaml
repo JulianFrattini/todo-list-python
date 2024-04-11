@@ -17,6 +17,8 @@ services:
     container_name: edutask-backend
     depends_on:
       - mongodb
+    volumes:
+          - "./backend/test:/app/test"
     environment:
       - MONGO_URL=mongodb://root:root@mongodb:27017
       - FLASK_BIND_IP=0.0.0.0
