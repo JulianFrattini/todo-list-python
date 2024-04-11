@@ -52,11 +52,11 @@ def test_get_user_by_email_match_two_print(sut, capsys):
     (valid_email, [user]),
     (valid_email, [])
     ])
-def test_get_user_by_email_match_no_print(sut, capsys, user_email, user_array):
+def test_get_user_by_email_valid_no_print(sut, capsys, user_email, user_array):
     """
     Tests get_user_by_email method with:
-    1. valid email - no match,
-    2. valid email - exactly one match,
+    1. valid email - exactly one match,
+    2. valid email - no match,
     In none of these cases should the
     print-function have been called
     """
