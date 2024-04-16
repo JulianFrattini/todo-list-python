@@ -14,7 +14,6 @@ def sut():
     mockedsut = UserController(dao=mockedDAO)
     return mockedsut
 
-valid_email = 'jane.doe@email.com'
 
 # missing local part
 invalid_email_1 = '@email.com'
@@ -75,6 +74,7 @@ def test_get_user_by_email_db_failure(sut):
     Tests get_user_by_email method, that Exception is raised when database fails
     """
 
+    valid_email = 'jane.doe@email.com'
     sut.dao.find.side_effect = Exception("DBfailure")
 
     # assert that exception is raised when database fails

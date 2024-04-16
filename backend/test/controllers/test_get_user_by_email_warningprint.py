@@ -11,14 +11,10 @@ where email address matches more than 1 user.
 In all other cases no message should be printed.
 """
 
-invalid_email = "invalidemail.com"
+
 valid_email = 'jane.doe@email.com'
 user = {
     'firstName': 'Jane',
-    'email': valid_email
-}
-second_user = {
-    'firstName': 'Hanna',
     'email': valid_email
 }
 
@@ -38,7 +34,10 @@ def test_get_user_by_email_match_two_print(sut, capsys):
     Assert that a warning message containing the
     email address is printed
     """
-    # mockedDAO.find.return_value = [user, second_user]
+    second_user = {
+        'firstName': 'Hanna',
+        'email': valid_email
+    }
     sut.dao.find.return_value = [user, second_user]
 
     sut.get_user_by_email(email=valid_email)
@@ -48,21 +47,21 @@ def test_get_user_by_email_match_two_print(sut, capsys):
 
 
 @pytest.mark.unit
-@pytest.mark.parametrize('user_email, user_array', [
-    (valid_email, [user]),
-    (valid_email, [])
+@pytest.mark.parametrize('user_array', [
+    ([user]),
+    ([])
     ])
-def test_get_user_by_email_match_no_print(sut, capsys, user_email, user_array):
+def test_get_user_by_email_valid_no_print(sut, capsys,user_array):
     """
     Tests get_user_by_email method with:
-    1. valid email - no match,
-    2. valid email - exactly one match,
+    1. valid email - exactly one match,
+    2. valid email - no match,
     In none of these cases should the
     print-function have been called
     """
 
     sut.dao.find.return_value = user_array
-    sut.get_user_by_email(email=user_email)
+    sut.get_user_by_email(email=valid_email)
     printed = capsys.readouterr()
 
     assert printed.out == ""
@@ -74,7 +73,7 @@ def test_get_user_by_email_invalid_no_print(sut, capsys):
     Tests get_user_by_email method with invalid email,
     The print function should not have been called
     """
-
+    invalid_email = "invalidemail.com"
 
     try:
         sut.get_user_by_email(email=invalid_email)
