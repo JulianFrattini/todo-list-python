@@ -40,7 +40,12 @@ class DAO:
         self.collection = database[collection_name]
 
     def create(self, data: dict):
-        """Creates a new document in the collection associated to this data access object. The creation of a new document must comply to the corresponding validator, which defines the data structure of the collection. In particular, the validator has to make sure that: (1) the data for the new object contains all required properties, (2) every property complies to the bson data type constraint (see https://www.mongodb.com/docs/manual/reference/bson-types/, though we currently only consider Strings and Booleans), (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
+        """
+        Creates a new document in the collection associated to this data access object.
+        The creation of a new document must comply to the corresponding validator, which defines the data structure of the collection. In particular, the validator has to make sure that:
+        (1) the data for the new object contains all required properties,
+        (2) every property complies to the bson data type constraint (see https://www.mongodb.com/docs/manual/reference/bson-types/, though we currently only consider Strings and Booleans),
+        (3) and the values of a property flagged with 'uniqueItems' are unique among all documents of the collection.
 
         parameters:
             data -- a dict containing key-value pairs compliant to the validator
@@ -52,6 +57,11 @@ class DAO:
             WriteError - in case at least one of the validator criteria is violated
         """
         localdata = dict(data)
+
+        # Check for duplicate unique fields
+        # for key, value in localdata.items():
+        #     if self.collection.find_one({key: value}):
+        #         raise Exception(f"Document with duplicate {key} found.")
 
         try:
             # insert the object into the database
@@ -67,7 +77,7 @@ class DAO:
     def findOne(self, id: str):
         """Find one specific object in the collection with the _id property equal to the given id.
 
-        parameters: 
+        parameters:
             id -- id value of the requested object
 
         returns:
@@ -84,9 +94,9 @@ class DAO:
 
     # find all objects that comply to the optional filter
     def find(self, filter=None, toid: list = None):
-        """Find all objects contained in the collection which comply to the given filter. 
+        """Find all objects contained in the collection which comply to the given filter.
 
-        parameters: 
+        parameters:
             filter -- dict containing key value pairs of properties and applicable filters
             toid -- list of properties (contained in the filter) which are MongoDB ObjectIDs and hence need to be converted
 
@@ -120,7 +130,7 @@ class DAO:
     def update(self, id: str, update_data: dict):
         """Find one specific object in the collection with the _id property equal to the given id and update its data according to the update_data.
 
-        parameters: 
+        parameters:
             id -- id value of the requested object
             update_data -- dict containing the update operation (top-level key values must be valid MongoDB update operators, see https://www.mongodb.com/docs/manual/reference/operator/update/#std-label-update-operators)
 
@@ -143,7 +153,7 @@ class DAO:
     def delete(self, id: str):
         """Find one specific object in the collection with the _id property equal to the given id and remove it from the collection
 
-        parameters: 
+        parameters:
             id -- id value of the requested object
 
         returns:
@@ -175,7 +185,7 @@ class DAO:
     def to_json(self, data):
         """Transform a MongoDB document into a json object.
 
-        paramenters: 
+        paramenters:
             data -- the MongoDB document
 
         returns:
