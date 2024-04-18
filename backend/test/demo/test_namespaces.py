@@ -10,7 +10,7 @@ class TestNamespaces:
     @pytest.mark.namespaces
     def test_1(self):
         # TODO: patch the DAO in the getDAO method within the daos module
-        with patch('?') as mockedDAO:
+        with patch('src.util.daos.DAO') as mockedDAO:
             mock = MagicMock()
             mockedDAO.return_value = mock
             assert getDao(collection_name='test') == mock
@@ -18,7 +18,7 @@ class TestNamespaces:
     @pytest.mark.namespaces
     def test_2(self):
         # TODO: patch the randint method in the diceroll method within the helpers module
-        with patch('?') as mockrandint:
+        with patch('src.util.helpers.random.randint') as mockrandint:
             mockrandint.return_value = 6
             assert diceroll() == True
 
@@ -32,11 +32,12 @@ class TestNamespaces:
 
         user = {'firstName': 'Jane', 'lastName': 'Doe', 'email': 'jane.doe'}
         # TODO: mock the DAO such that it returns this simulated user
-        mockedDAO = None
+        mockedDAO = MagicMock()
+        mockedDAO.find.return_value = user
+        
         uc = UserController(dao=mockedDAO)
 
         # TODO: patch the fullmatch method of the regex library
-        with patch('?') as mockfullmatch:
+        with patch('src.controllers.usercontroller.re.fullmatch') as mockfullmatch:
             mockfullmatch.return_value = True
-
             assert uc.get_user_by_email(email='jane.doe') == user
