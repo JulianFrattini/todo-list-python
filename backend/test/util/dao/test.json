@@ -1,0 +1,17 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["email"],
+        "properties": {
+            "email": {
+                "bsonType": "string",
+                "description": "a property that is required and unique",
+                "uniqueItems": true
+            },
+            "name": {
+                "bsonType": "string",
+                "description": "a property that is optional and does not need to be unique"
+            }
+        }
+    }
+}
