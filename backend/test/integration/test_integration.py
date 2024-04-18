@@ -1,6 +1,4 @@
 import pytest
-import unittest.mock as mock
-from unittest.mock import patch
 from src.util.dao import DAO
 import pymongo.errors
 import json
