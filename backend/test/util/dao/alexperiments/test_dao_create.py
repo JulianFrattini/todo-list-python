@@ -2,6 +2,8 @@ import pytest
 from unittest.mock import patch
 from src.util.dao import DAO
 
+from pymongo.errors import WriteError
+
 database_name = 'test'
 collection_name = 'tests'
 
@@ -60,7 +62,7 @@ class TestCreate:
 
             return dao
 
-    @pytest.mark.admin
+    @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
     def test_return_user(self, dao, user):
        
@@ -70,7 +72,7 @@ class TestCreate:
         # Assert that the result is as expected
         assert result == user
 
-    @pytest.mark.admin
+    @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
     def test_db_contains_user(self, mongodb, user):
         # Check if the user is in the database
@@ -79,3 +81,8 @@ class TestCreate:
         assert result == user
 
     
+    @pytest.mark.integration
+    @pytest.mark.parametrize("user", invalid_users)
+    def test_invalid_user(self, dao, user):
+        with pytest.raises(WriteError):
+            dao.create(user)
