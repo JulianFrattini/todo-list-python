@@ -22,10 +22,15 @@ collection_validator = {
     }
 }
 
-users = [
+valid_users = [
     {'name': 'john', 'email': 'john.smith@gmail.com'},
     {'name': 'jane', 'email': 'jane.doe@gmail.com'},
     {'name': 'john', 'email': 'john.smurd@gmail.com'}
+]
+
+invalid_users = [
+    {'name': 'bad john'},
+    {'name': 'bad jane', 'email': None}
 ]
 
 @pytest.fixture(scope="module")
@@ -56,7 +61,7 @@ class TestCreate:
             return dao
 
     @pytest.mark.integration
-    @pytest.mark.parametrize("user", users)
+    @pytest.mark.parametrize("user", valid_users)
     def test_return_user(self, dao, user):
        
         result = dao.create(user)
@@ -65,7 +70,7 @@ class TestCreate:
         assert result == user
 
     @pytest.mark.integration
-    @pytest.mark.parametrize("user", users)
+    @pytest.mark.parametrize("user", valid_users)
     def test_db_contains_user(self, mongodb, user):
         # Check if the user is in the database
         assert mongodb.test[collection_name].find_one({"_id": user["_id"]}) == user
