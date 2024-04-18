@@ -5,6 +5,7 @@ import json
 import os
 from pymongo.errors import WriteError
 
+
 # Set temporary validator to return same rules as the validator 'user'
 @pytest.fixture
 @pytest.mark.integration
