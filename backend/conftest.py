@@ -1,5 +1,6 @@
 import pytest
 import pymongo
+from dotenv import dotenv_values
 
 @pytest.fixture(scope="session")
 def mongodb():
@@ -7,12 +8,17 @@ def mongodb():
     This fixture creates a MongoDB client instance and returns it.
     The instance is session-scoped and will be shared by all tests requesting it.
     '''
-    client = pymongo.MongoClient('localhost', 27017, directConnection=True, replicaset="rs0")
+    client = pymongo.MongoClient(dotenv_values('.env').get('MONGO_URL'))
+    
     try:
         client.admin.command('ping')
     except Exception as e:
         raise Exception("Could not connect to MongoDB. Please make sure that MongoDB is running.") from e
-    return client
+    
+    yield client
+
+    client.close()
+
 
 @pytest.fixture
 def rollback_session(mongodb):
