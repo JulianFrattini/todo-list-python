@@ -23,9 +23,9 @@ collection_validator = {
 }
 
 users = [
-    {'_id': '01', 'firstName': 'john', 'lastName': 'smith', 'email': 'john.smith@gmail.com'},
-    {'_id': '02', 'firstName': 'jane', 'lastName': 'doe', 'email': 'jane.doe@gmail.com'},
-    {'_id': '03', 'firstName': 'john', 'lastName': 'smurd', 'email': 'john.smurd@gmail.com'}
+    {'name': 'john', 'email': 'john.smith@gmail.com'},
+    {'name': 'jane', 'email': 'jane.doe@gmail.com'},
+    {'name': 'john', 'email': 'john.smurd@gmail.com'}
 ]
 
 @pytest.fixture(scope="module")
@@ -69,3 +69,5 @@ class TestCreate:
     def test_db_contains_user(self, mongodb, user):
         # Check if the user is in the database
         assert mongodb.test[collection_name].find_one({"_id": user["_id"]}) == user
+
+    
