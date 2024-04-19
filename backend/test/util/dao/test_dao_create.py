@@ -71,11 +71,11 @@ class TestCreate:
 
     @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
-    def test_db_contains_valid_user(self, dao, mongodb, user):
+    def test_db_contains_valid_user(self, dao, database, user):
         result = dao.create(user)
 
         # Check if the user is in the database
-        result = mongodb[database_name][collection_name].find_one({"email": user["email"]})
+        result = database[collection_name].find_one({"email": user["email"]})
         result.pop('_id')
 
         assert result == user
