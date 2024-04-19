@@ -6,8 +6,6 @@ import os
 import pymongo
 import json
 from bson.objectid import ObjectId
-
-
 from src.util.dao import DAO
 
 
@@ -44,18 +42,34 @@ def sut(test_db):
         yield sut
 
 
-
+# includes only the required property
 valid_obj_1 = {
     "email": "test@email.com"
 }
 
+# includes one required property and one
+# optional
 valid_obj_2 = {
     "email": "test@email.com",
     "name": "Test Testsson"
 }
 
+# missing required property
 invalid_obj_1 = {
     "name": "Test Testsson"
+}
+
+# includes one required property and one that
+# is not listed in the validator
+invalid_obj_2 = {
+    "email": "test@email.com",
+    "phone": "073-050 34 00"
+}
+
+# property is of wrong type
+invalid_obj_3 = {
+    "email": "test@email.com",
+    "name": True
 }
 
 
@@ -94,3 +108,29 @@ def test_create_ok2(sut, new_obj):
     res.pop('_id')
     assert res == new_obj
 
+@pytest.mark.integration
+@pytest.mark.parametrize('new_obj', [
+    (invalid_obj_1),
+    (invalid_obj_2),
+    (invalid_obj_3)
+    ])
+def test_create_invalid_not_ok(sut, new_obj):
+    """
+    Tests create invalid objects:
+    1. missing required property
+    2. includes a property that is not listed
+    3. includes a property with wrong bson type
+    """
+    with pytest.raises(pymongo.errors.WriteError):
+        sut.create(new_obj)
+
+
+@pytest.mark.integration
+def test_create_dup_not_ok(sut):
+    """
+    Tests create object with duplicate unique property
+    """
+    sut.create(valid_obj_2)
+
+    with pytest.raises(pymongo.errors.WriteError):
+        sut.create(valid_obj_2)
