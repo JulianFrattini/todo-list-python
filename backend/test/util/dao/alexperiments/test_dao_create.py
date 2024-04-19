@@ -64,7 +64,7 @@ class TestCreate:
 
     @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
-    def test_return_user(self, dao, user):
+    def test_method_returns_valid_user(self, dao, user):
        
         result = dao.create(user)
         result.pop('_id')
@@ -74,7 +74,7 @@ class TestCreate:
 
     @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
-    def test_db_contains_user(self, mongodb, user):
+    def test_db_contains_valid_user(self, mongodb, user):
         # Check if the user is in the database
         result = mongodb[database_name][collection_name].find_one({"email": user["email"]})
         result.pop('_id')
@@ -83,6 +83,6 @@ class TestCreate:
     
     @pytest.mark.integration
     @pytest.mark.parametrize("user", invalid_users)
-    def test_invalid_user(self, dao, user):
+    def test_invalid_user_raises_error(self, dao, user):
         with pytest.raises(WriteError):
             dao.create(user)
