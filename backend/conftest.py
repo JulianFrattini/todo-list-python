@@ -1,5 +1,6 @@
 import pytest
 import pymongo
+import os
 from dotenv import dotenv_values
 
 @pytest.fixture(scope="session")
@@ -8,7 +9,9 @@ def mongodb():
     This fixture creates a MongoDB client instance and returns it.
     The instance is session-scoped and will be shared by all tests requesting it.
     '''
-    client = pymongo.MongoClient(dotenv_values('.env').get('MONGO_URL'))
+    LOCAL_MONGO_URL = dotenv_values('.env').get('MONGO_URL')
+    MONGO_URL = os.environ.get('MONGO_URL', LOCAL_MONGO_URL)
+    client = pymongo.MongoClient(MONGO_URL)
     
     try:
         client.admin.command('ping')
