@@ -68,7 +68,6 @@ class TestCreate:
         result = dao.create(user)
         result.pop('_id')
 
-        # Assert that the result is as expected
         assert result == user
 
     @pytest.mark.integration
