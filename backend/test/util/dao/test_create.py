@@ -120,17 +120,59 @@ def test_create_invalid_not_ok(sut, new_obj):
     1. missing required property
     2. includes a property that is not listed
     3. includes a property with wrong bson type
+    should taise WriteError
     """
     with pytest.raises(pymongo.errors.WriteError):
         sut.create(new_obj)
 
 
 @pytest.mark.integration
+@pytest.mark.parametrize('new_obj', [
+    (invalid_obj_1),
+    (invalid_obj_2),
+    (invalid_obj_3)
+    ])
+def test_create_invalid_not_ok2(sut, new_obj):
+    """
+    Tests create invalid objects:
+    1. missing required property
+    2. includes a property that is not listed
+    3. includes a property with wrong bson type
+    The document should not be created
+    """
+    try:
+        sut.create(new_obj)
+    except:
+        pass
+
+    count_users = sut.collection.count_documents(new_obj)
+    assert count_users == 0
+
+
+@pytest.mark.integration
 def test_create_dup_not_ok(sut):
     """
-    Tests create object with duplicate unique property
+    Tests create object with duplicate unique property,
+    WriteError should be raised
     """
     sut.create(valid_obj_2)
 
     with pytest.raises(pymongo.errors.WriteError):
         sut.create(valid_obj_2)
+
+
+@pytest.mark.integration
+def test_create_dup_not_ok2(sut):
+    """
+    Tests create object with duplicate unique property,
+    duplicate object should not have been created
+    """
+    sut.create(valid_obj_2)
+
+    try:
+        sut.create(valid_obj_2)
+    except:
+        pass
+
+    count_users = sut.collection.count_documents(valid_obj_2)
+    assert count_users == 1
