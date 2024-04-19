@@ -35,7 +35,7 @@ invalid_users = [
     {'name': 'bad jane', 'email': None}
 ]
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def database(mongodb):
     '''
     This fixture creates a database instance and returns it.
@@ -52,7 +52,7 @@ def database(mongodb):
     database[collection_name].drop()
 
 class TestCreate:
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def dao(self, database):
         with patch('src.util.dao.pymongo.MongoClient') as mock_client:
             # Replace the edutask database with the test database
@@ -65,7 +65,6 @@ class TestCreate:
     @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
     def test_method_returns_valid_user(self, dao, user):
-       
         result = dao.create(user)
         result.pop('_id')
 
@@ -74,10 +73,13 @@ class TestCreate:
 
     @pytest.mark.integration
     @pytest.mark.parametrize("user", valid_users)
-    def test_db_contains_valid_user(self, mongodb, user):
+    def test_db_contains_valid_user(self, dao, mongodb, user):
+        result = dao.create(user)
+
         # Check if the user is in the database
         result = mongodb[database_name][collection_name].find_one({"email": user["email"]})
         result.pop('_id')
+
         assert result == user
 
     
