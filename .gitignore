@@ -29,6 +29,7 @@ yarn-error.log*
 
 # database
 data/db/
+datadb
 *.coverage
 backend/.venv/
 backend/test/solutions/
