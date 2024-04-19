@@ -26,8 +26,7 @@ collection_validator = {
 
 valid_users = [
     {'name': 'john', 'email': 'john.smith@gmail.com'},
-    {'name': 'jane', 'email': 'jane.doe@gmail.com'},
-    {'name': 'john', 'email': 'john.smurd@gmail.com'}
+    {'email': 'jane.doe@gmail.com'},
 ]
 
 invalid_users = [
