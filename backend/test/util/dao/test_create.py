@@ -18,28 +18,30 @@ def test_db():
 
     db = client.edutask_test
 
-    # "pre-create" the test-collection
-    if 'test' not in db.list_collection_names():
-        with open('./test/util/dao/test.json', 'r') as f:
-            validator = json.load(f)
-        db.create_collection('test', validator=validator)
     yield db
-    db.drop_collection('test')
+    client.drop_database('edutask_test')
+    client.close()
+
 
 @pytest.fixture
 def sut(test_db):
     with patch('src.util.dao.pymongo.MongoClient', autospec=True) as mock_pymongo, \
         patch('src.util.dao.getValidator', autospec=True) as mock_getValidator:
-        mock_getValidator.return_value = None
+
+        with open('./test/util/dao/test.json', 'r') as f:
+            mock_getValidator.return_value = json.load(f)
+
         mock_client = mock.MagicMock()
 
         # replace so that edutask property points to
         # edutask_test database
         type(mock_client).edutask = mock.PropertyMock(return_value=test_db)
         mock_pymongo.return_value = mock_client
-    
+
         sut = DAO(collection_name='test')
         yield sut
+
+        test_db.drop_collection('test')
 
 
 # includes only the required property
