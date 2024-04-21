@@ -30,7 +30,6 @@ def test_db():
 def sut(test_db):
     with patch('src.util.dao.pymongo.MongoClient', autospec=True) as mock_pymongo, \
         patch('src.util.dao.getValidator', autospec=True) as mock_getValidator:
-        mock_getValidator.return_value = None
         mock_client = mock.MagicMock()
 
         # replace so that edutask property points to
