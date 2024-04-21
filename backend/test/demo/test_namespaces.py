@@ -33,7 +33,7 @@ class TestNamespaces:
         user = {'firstName': 'Jane', 'lastName': 'Doe', 'email': 'jane.doe'}
         # TODO: mock the DAO such that it returns this simulated user
         mockedDAO = MagicMock()
-        mockedDAO.find.return_value = user
+        mockedDAO.find.return_value = [user]
         
         uc = UserController(dao=mockedDAO)
 
