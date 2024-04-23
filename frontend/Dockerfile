@@ -1,14 +1,14 @@
 FROM node:latest
 
-COPY package.json /backend/
+COPY package.json /frontend/
 
-WORKDIR /backend/
+WORKDIR /frontend/
 
 RUN npm install
 
-COPY src /backend/src/
+COPY src /frontend/src/
 
-COPY public /backend/public/
+COPY public /frontend/public/
 
 EXPOSE 5000
 
