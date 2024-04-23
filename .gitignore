@@ -28,6 +28,10 @@ yarn-error.log*
 .env
 frontend/.env
 
+# testing
+frontend/cypress/screenshots/
+frontend/cypress/videos/
+
 # mypy
 .mypy_cache/
 
