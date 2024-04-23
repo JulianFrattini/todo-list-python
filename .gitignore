@@ -26,6 +26,7 @@ yarn-error.log*
 
 .venv
 .env
+frontend/.env
 
 # mypy
 .mypy_cache/
