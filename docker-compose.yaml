@@ -41,6 +41,9 @@ services:
       - CYPRESS_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in cypress.config.js
     ports:
       - "${PORT_FRONTEND}:${PORT_FRONTEND}"
+    volumes:
+      - ./frontend/cypress:/frontend/cypress # This is where the cypress tests are stored
+      - ./frontend/cypress.config.js:/frontend/cypress.config.js # This is the cypress configuration file
     command: npm run start
 
 networks:
