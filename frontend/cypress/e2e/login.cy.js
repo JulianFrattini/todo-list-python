@@ -1,3 +1,5 @@
+const backend_url = Cypress.env('BACKEND_URL')
+
 describe('Logging into the system', () => {
   // define variables that we need on multiple occasions
   let uid // user id
@@ -10,7 +12,7 @@ describe('Logging into the system', () => {
       .then((user) => {
         cy.request({
           method: 'POST',
-          url: 'http://localhost:5000/users/create',
+          url: `${backend_url}/users/create`,
           form: true,
           body: user
         }).then((response) => {
@@ -23,7 +25,7 @@ describe('Logging into the system', () => {
 
   beforeEach(function () {
     // enter the main main page
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
   })
 
   it('starting out on the landing screen', () => {
@@ -54,7 +56,7 @@ describe('Logging into the system', () => {
     // clean up by deleting the user from the database
     cy.request({
       method: 'DELETE',
-      url: `http://localhost:5000/users/${uid}`
+      url: `${backend_url}/users/${uid}`
     }).then((response) => {
       cy.log(response.body)
     })
