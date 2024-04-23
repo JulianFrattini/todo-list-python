@@ -37,6 +37,8 @@ services:
       - HOST=0.0.0.0
       - PORT=${PORT_FRONTEND}
       - REACT_APP_BACKEND_PORT=${PORT_BACKEND}
+      - CYPRESS_BASE_URL=http://frontend:${PORT_FRONTEND} # This overrides the base URL in cypress.config.js 
+      - CYPRESS_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in cypress.config.js
     ports:
       - "${PORT_FRONTEND}:${PORT_FRONTEND}"
     command: npm run start
