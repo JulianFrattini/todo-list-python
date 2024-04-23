@@ -4,7 +4,7 @@ COPY package.json /backend/
 
 WORKDIR /backend/
 
-RUN npm install --save
+RUN npm install
 
 COPY src /backend/src/
 
