@@ -23,7 +23,7 @@ COPY src /frontend/src/
 
 COPY public /frontend/public/
 
-EXPOSE 5000
+# EXPOSE 3000 # Uncomment if you are not using compose and update the port if needed
 
 ENV HOST=0.0.0.0
 
