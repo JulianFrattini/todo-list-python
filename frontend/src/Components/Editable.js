@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import './../Styles/TaskDetail.css'
 
 function Editable({ objectname, object, variablename, updateTasks }) {
@@ -12,32 +12,32 @@ function Editable({ objectname, object, variablename, updateTasks }) {
     const save = (e) => {
         e.preventDefault();
         setChanging(false);
-        
+
         // construct the form to submit
         const data = new URLSearchParams();
         data.append('data', `{'$set': {'${variablename}': '${text}'}}`);
 
         // send a request to the server updating the given field
-        fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/${objectname}/byid/${object._id}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/${objectname}/byid/${object._id}`, {
             method: 'put',
             body: data,
-            headers: {'Cache-Control': 'no-cache'}
+            headers: { 'Cache-Control': 'no-cache' }
         })
             .then(res => res.json())
             .then(ob => updateTasks())
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error(error)
             });
     }
 
     return (
-        changing ? 
-        <form onSubmit={save} className='inline-form'>                    
-            <input type='text' onChange={e => setText(e.target.value)} value={text}></input>
-            <input type='submit' value='Save'></input>
-        </form>
-        :
-        <span onClick={() => setChanging(true)} className='editable'>{text}</span>
+        changing ?
+            <form onSubmit={save} className='inline-form'>
+                <input type='text' onChange={e => setText(e.target.value)} value={text}></input>
+                <input type='submit' value='Save'></input>
+            </form>
+            :
+            <span onClick={() => setChanging(true)} className='editable'>{text}</span>
     );
 }
 

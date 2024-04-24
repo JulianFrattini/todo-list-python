@@ -24,7 +24,7 @@ function TaskView(props) {
    * Fetch all tasks associated to this user from the server
    */
   const updateTasks = () => {
-    fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/tasks/ofuser/${props.user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks/ofuser/${props.user._id}`, {
       method: 'get',
       headers: { 'Cache-Control': 'no-cache' }
     })
@@ -51,7 +51,7 @@ function TaskView(props) {
           <div className='container-element' key={task.id}>
             <a onClick={() => { setTrigger(true); setFocus(task) }}>
               <img src={`http://i3.ytimg.com/vi/${task.url}/hqdefault.jpg`} alt='' />
-              { task.done ? <div className="done-overlay"><div className="done-check"></div></div> : <div></div>}
+              {task.done ? <div className="done-overlay"><div className="done-check"></div></div> : <div></div>}
               <div className="title-overlay">{task.title}</div>
             </a>
           </div>)}

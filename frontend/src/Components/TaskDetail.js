@@ -18,7 +18,7 @@ function TaskDetail({ taskid, updateTasks }) {
      * Re-fetch the current task from the server once more
      */
     const updateTask = () => {
-        fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/tasks/byid/${taskid}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks/byid/${taskid}`, {
             method: 'get',
             headers: { 'Cache-Control': 'no-cache' }
         })
@@ -44,7 +44,7 @@ function TaskDetail({ taskid, updateTasks }) {
         data.append('taskid', task._id);
         data.append('description', todo);
 
-        fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/todos/create`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/todos/create`, {
             method: 'post',
             body: data,
             headers: { 'Cache-Control': 'no-cache' }
@@ -56,7 +56,7 @@ function TaskDetail({ taskid, updateTasks }) {
                 console.error(error)
             });
 
-        
+
         setTodo("");
     }
 
@@ -68,7 +68,7 @@ function TaskDetail({ taskid, updateTasks }) {
         const data = new URLSearchParams();
         data.append('data', `{'$set': {'done': ${!todo.done}}}`);
 
-        fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/todos/byid/${todo._id}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/todos/byid/${todo._id}`, {
             method: 'put',
             body: data,
             headers: { 'Cache-Control': 'no-cache' }
@@ -87,7 +87,7 @@ function TaskDetail({ taskid, updateTasks }) {
      * @param {*} todo Todo object which is deleted
      */
     const deleteTodo = (todo) => {
-        fetch(`http://localhost:5000/todos/byid/${todo._id}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/todos/byid/${todo._id}`, {
             method: 'delete',
             headers: { 'Cache-Control': 'no-cache' }
         })
