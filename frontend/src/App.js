@@ -19,7 +19,7 @@ function App() {
     data.append('lastName', details.lastName);
 
     // send a request to the server creating a new user
-    fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users/create`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/create`, {
       method: 'post',
       body: data
     })
@@ -37,7 +37,7 @@ function App() {
    * @param {*} details Dict contaiing at least the email address of a user
    */
   const login = (details) => {
-    fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users/bymail/${details.email}`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/bymail/${details.email}`)
       .then(res => res.json())
       .then(userobj => {
         userobj['_id'] = userobj['_id']['$oid'];

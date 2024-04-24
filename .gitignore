@@ -25,6 +25,12 @@ yarn-debug.log*
 yarn-error.log*
 
 .venv
+.env
+frontend/.env
+
+# testing
+frontend/cypress/screenshots/
+frontend/cypress/videos/
 
 # mypy
 .mypy_cache/

@@ -1,16 +1,29 @@
 FROM node:latest
 
-COPY package.json /backend/
+# Install operating system dependencies required by Cypress Test Runner
+RUN apt-get update && apt-get install -y \
+    libgtk2.0-0 \
+    libgtk-3-0 \
+    libgbm-dev \
+    libnotify-dev \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libxtst6 \
+    xauth \
+    xvfb
 
-WORKDIR /backend/
+COPY package.json /frontend/
 
-RUN npm install --save
+WORKDIR /frontend/
 
-COPY src /backend/src/
+RUN npm install
 
-COPY public /backend/public/
+COPY src /frontend/src/
 
-EXPOSE 5000
+COPY public /frontend/public/
+
+# EXPOSE 3000 # Uncomment if you are not using compose and update the port if needed
 
 ENV HOST=0.0.0.0
 

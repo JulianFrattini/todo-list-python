@@ -18,7 +18,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-          - "./backend/test:/app/test"
+      - "./backend/test:/app/test"
     environment:
       - MONGO_URL=mongodb://root:root@mongodb:27017
       - FLASK_BIND_IP=0.0.0.0
@@ -35,10 +35,17 @@ services:
       - backend
     environment:
       - HOST=0.0.0.0
-      - PORT=${PORT_FRONTEND}
-      - REACT_APP_BACKEND_PORT=${PORT_BACKEND}
+      - PORT=${PORT_FRONTEND} # This overrides the frontend port in .env
+      - REACT_APP_BACKEND_PORT=${PORT_BACKEND} # This overrides the backend port in .env
+      - REACT_APP_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in .env
+      - BASE_URL=http://frontend:${PORT_FRONTEND} # This overrides the base URL in .env
+      - CYPRESS_BASE_URL=http://frontend:${PORT_FRONTEND} # This overrides the base URL in cypress.config.js 
+      - CYPRESS_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in cypress.config.js
     ports:
       - "${PORT_FRONTEND}:${PORT_FRONTEND}"
+    volumes:
+      - ./frontend/cypress:/frontend/cypress # This is where the cypress tests are stored
+      - ./frontend/cypress.config.js:/frontend/cypress.config.js # This is the cypress configuration file
     command: npm run start
 
 networks:
