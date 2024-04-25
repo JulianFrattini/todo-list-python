@@ -35,12 +35,11 @@ services:
       - backend
     environment:
       - HOST=0.0.0.0
-      - PORT=${PORT_FRONTEND} # This overrides the frontend port in .env
-      - REACT_APP_BACKEND_PORT=${PORT_BACKEND} # This overrides the backend port in .env
-      - REACT_APP_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in .env
-      - BASE_URL=http://frontend:${PORT_FRONTEND} # This overrides the base URL in .env
-      - CYPRESS_BASE_URL=http://frontend:${PORT_FRONTEND} # This overrides the base URL in cypress.config.js 
-      - CYPRESS_BACKEND_URL=http://backend:${PORT_BACKEND} # This overrides the backend URL in cypress.config.js
+      - PORT=${PORT_FRONTEND} # This overrides the frontend port in frontend/.env
+      - REACT_APP_BACKEND_PORT=${PORT_BACKEND} # This overrides the backend port in frontend/.env
+      - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL:-http://localhost:${PORT_BACKEND}} # This overrides the backend URL in frontend/.env
+      - CYPRESS_BASE_URL=${CYPRESS_BASE_URL:-http://localhost:${PORT_FRONTEND}} # This overrides the base URL in cypress.config.js 
+      - CYPRESS_BACKEND_URL=${REACT_APP_BACKEND_URL:-http://localhost:${PORT_BACKEND}} # This overrides the backend URL in cypress.config.js
     ports:
       - "${PORT_FRONTEND}:${PORT_FRONTEND}"
     volumes:
