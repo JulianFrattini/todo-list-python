@@ -14,7 +14,7 @@
             }, 
             "startdate": {
                 "bsonType": "date"
-            }, 
+            },
             "duedate": {
                 "bsonType": "date"
             },
