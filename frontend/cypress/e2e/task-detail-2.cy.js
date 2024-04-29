@@ -3,6 +3,8 @@ describe('Adding and editing todo items', () => {
     let uid // user id
     let name // name of the user (firstName + ' ' + lastName)
     let email // email of the user
+  
+    let taskTitle // title of task from file
 
     before(function () {
         // create a fabricated user from a fixture
@@ -31,25 +33,30 @@ describe('Adding and editing todo items', () => {
                     form: true,
                     body: task
                 })
-            })
-    })
 
+                taskTitle = task.title
+            })
+
+        cy.viewport(1024, 768)
+    })
+  
     beforeEach(function () {
         // Login and go to task overview
         cy.visit('http://localhost:3000')
 
-        cy.get('.inputwrapper #email')
+        cy.contains('div', 'Email Address')
+            .find('input[type=text]')
             .type(email)
 
-        // submit the form on this page
-        cy.get('form').submit()
+        cy.get('form')
+            .submit()
 
         // Click fabricated task to go into detail view
-        cy.contains('div', 'Cypress testing')
+        cy.contains('div', taskTitle)
             .click()
     })
 
-
+    /* Unnecessary tests?
     it('assert Add button is enabled (input field populated)', () => {
         // Populate input field
         cy.get('ul.todo-list')
@@ -70,22 +77,22 @@ describe('Adding and editing todo items', () => {
         cy.get('ul.todo-list')
             .find('li')
             .should('have.length', 2)
-        // .should('have.length', 3)
+            // .should('have.length', 3)
     })
+    */
 
-
-    // it('assert Add button is disabled (input field empty)', () => {
-    //     // Check state of Add button
-    //     cy.get('input[type=submit][value=Add]')
-    //         .should('be.disabled')
-    //     // .should('be.enabled')
-    // })
+    it('assert Add button is disabled (input field empty)', () => {
+        // Check state of Add button
+        cy.get('input[type=submit][value=Add]')
+            // .should('be.disabled')
+            .should('be.enabled')
+    })
 
     it('assert new todo item added when Add button clicked (input field populated)', () => {
         // Populate input field
         cy.get('ul.todo-list')
             .find('input[type=text]')
-            .type('test')
+            .type('test 1')
 
         // Click Add button
         cy.get('input[type=submit][value=Add]')
@@ -95,33 +102,26 @@ describe('Adding and editing todo items', () => {
         cy.get('ul.todo-list').should('contain.text', 'test')
     })
 
-    it('ative done', () => {
-        //click the first unchecked item
+    it('assert active todo item set to done when clicked', () => {
+        // Create a new todo item
         cy.get('ul.todo-list')
-            .get('.unchecked')
-            .first()
-            .click()
-        //the same item is now supposed to be checked
-        cy.get('ul.todo-list')
-            .get('.checked')
-    })
+            .find('input[type=text]')
+            .type('test 2')
 
-    it('done active', () => {
-        //click the first checked item
-        cy.get('ul.todo-list')
-            .get('.checked')
-            .first()
+        cy.get('input[type=submit][value=Add]')
             .click()
-        //the same item is now supposed to be unchecked
-        cy.get('ul.todo-list')
-            .get('.unchecked')
-    })
 
-    it('use x button to remove task', () => {
-        cy.get('ul.todo-list')
-            .get('.remover')
-            .first()
+        // Click checker span of newly created item
+        cy.get('li.todo-item')
+            .contains('test 2')
+            .parent('li')
+            .find('span.checker')
             .click()
+
+        // Check that description span has line-through css property
+        cy.get('li.todo-item').contains('test 2')
+            .invoke('css', 'text-decoration')
+            .should('contain', 'line-through')
     })
 
     after(function () {
@@ -129,8 +129,8 @@ describe('Adding and editing todo items', () => {
         cy.request({
             method: 'DELETE',
             url: `http://localhost:5000/users/${uid}`
-        }).then((response) => {
-            cy.log(response.body)
+            }).then((response) => {
+                cy.log(response.body)
         })
     })
 
