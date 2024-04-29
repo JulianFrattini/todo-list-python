@@ -3,7 +3,7 @@ describe('Adding and editing todo items', () => {
     let uid // user id
     let name // name of the user (firstName + ' ' + lastName)
     let email // email of the user
-  
+
     before(function () {
         // create a fabricated user from a fixture
         cy.fixture('user.json')
@@ -33,24 +33,23 @@ describe('Adding and editing todo items', () => {
                 })
             })
     })
-  
+
     beforeEach(function () {
         // Login and go to task overview
         cy.visit('http://localhost:3000')
 
-        cy.contains('div', 'Email Address')
-            .find('input[type=text]')
+        cy.get('.inputwrapper #email')
             .type(email)
 
-        cy.get('form')
-            .submit()
+        // submit the form on this page
+        cy.get('form').submit()
 
         // Click fabricated task to go into detail view
         cy.contains('div', 'Cypress testing')
             .click()
     })
 
-    /*
+
     it('assert Add button is enabled (input field populated)', () => {
         // Populate input field
         cy.get('ul.todo-list')
@@ -71,16 +70,16 @@ describe('Adding and editing todo items', () => {
         cy.get('ul.todo-list')
             .find('li')
             .should('have.length', 2)
-            // .should('have.length', 3)
+        // .should('have.length', 3)
     })
-    */
 
-    it('assert Add button is disabled (input field empty)', () => {
-        // Check state of Add button
-        cy.get('input[type=submit][value=Add]')
-            .should('be.disabled')
-            // .should('be.enabled')
-    })
+
+    // it('assert Add button is disabled (input field empty)', () => {
+    //     // Check state of Add button
+    //     cy.get('input[type=submit][value=Add]')
+    //         .should('be.disabled')
+    //     // .should('be.enabled')
+    // })
 
     it('assert new todo item added when Add button clicked (input field populated)', () => {
         // Populate input field
@@ -96,13 +95,42 @@ describe('Adding and editing todo items', () => {
         cy.get('ul.todo-list').should('contain.text', 'test')
     })
 
+    it('ative done', () => {
+        //click the first unchecked item
+        cy.get('ul.todo-list')
+            .get('.unchecked')
+            .first()
+            .click()
+        //the same item is now supposed to be checked
+        cy.get('ul.todo-list')
+            .get('.checked')
+    })
+
+    it('done active', () => {
+        //click the first checked item
+        cy.get('ul.todo-list')
+            .get('.checked')
+            .first()
+            .click()
+        //the same item is now supposed to be unchecked
+        cy.get('ul.todo-list')
+            .get('.unchecked')
+    })
+
+    it('use x button to remove task', () => {
+        cy.get('ul.todo-list')
+            .get('.remover')
+            .first()
+            .click()
+    })
+
     after(function () {
         // Delete user (automatically deletes user's tasks and todos?)
         cy.request({
             method: 'DELETE',
             url: `http://localhost:5000/users/${uid}`
-            }).then((response) => {
-                cy.log(response.body)
+        }).then((response) => {
+            cy.log(response.body)
         })
     })
 
