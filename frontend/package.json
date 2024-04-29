@@ -19,10 +19,20 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "env": {
+      "cypress/globals": true
+    },
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "plugin:cypress/recommended"
+    ],
+    "plugins": [
+      "cypress"
+    ],
+    "rules": {
+      "no-unused-expressions": 0
+    }
   },
   "browserslist": {
     "production": [
@@ -37,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^12.10.0"
+    "cypress": "^12.10.0",
+    "eslint-plugin-cypress": "2.15.1"
   }
 }

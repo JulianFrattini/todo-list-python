@@ -23,3 +23,28 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// yields elements with a data-test attribute that match a specified selector
+Cypress.Commands.add("getBySel", (selector, ...args) => {
+  return cy.get(`[data-test=${selector}]`, ...args)
+})
+
+// yields elements with a data-test attribute that contains a specified selector
+Cypress.Commands.add("getBySelLike", (selector, ...args) => {
+  return cy.get(`[data-test*=${selector}]`, ...args)
+})
+
+Cypress.Commands.add("login", (uid) => {
+  cy.request(`http://localhost:5000/users/${uid}`).then((res) => {
+    const user = res.body
+    user.id = user._id.$oid
+    delete user._id
+    user.fullName = `${user.firstName} ${user.lastName}`
+
+    cy.visit("/")
+    cy.getBySel("email-input").type(user.email)
+    cy.getBySel("login-submit").click()
+
+    return cy.wrap(user)
+  })
+})
