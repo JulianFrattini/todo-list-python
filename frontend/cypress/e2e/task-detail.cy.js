@@ -4,6 +4,8 @@ describe('Adding and editing todo items', () => {
     let name // name of the user (firstName + ' ' + lastName)
     let email // email of the user
 
+    let taskTitle // title of task from file
+
     before(function () {
         // create a fabricated user from a fixture
         cy.fixture('user.json')
@@ -31,97 +33,121 @@ describe('Adding and editing todo items', () => {
                     form: true,
                     body: task
                 })
+
+                taskTitle = task.title
             })
+
+        cy.viewport(1024, 768)
     })
 
     beforeEach(function () {
         // Login and go to task overview
         cy.visit('http://localhost:3000')
 
-        cy.get('.inputwrapper #email')
+        cy.contains('div', 'Email Address')
+            .find('input[type=text]')
             .type(email)
 
-        // submit the form on this page
-        cy.get('form').submit()
+        cy.get('form')
+            .submit()
 
         // Click fabricated task to go into detail view
-        cy.contains('div', 'Cypress testing')
+        cy.contains('div', taskTitle)
             .click()
     })
 
+    /**
+ * test cases
+ * 
+ */
+
+    it('assert Add button is disabled (input field empty)', () => {
+        // Check state of Add button
+        cy.get('input[type=submit][value=Add]')
+            .should('be.disabled')
+        // .should('be.enabled')
+    })
 
     it('assert Add button is enabled (input field populated)', () => {
         // Populate input field
         cy.get('ul.todo-list')
             .find('input[type=text]')
-            .type('test')
+            .type('test 1')
 
-        // Check state of Add button
         cy.get('input[type=submit][value=Add]')
             .should('be.enabled')
     })
 
-    it('assert new todo item not added when Add button clicked (input field empty)', () => {
-        // Click Add button
-        cy.get('input[type=submit][value=Add]')
-            .click()
-
-        // Assert length of todo list is not greater than default (2)
-        cy.get('ul.todo-list')
-            .find('li')
-            .should('have.length', 2)
-        // .should('have.length', 3)
-    })
-
-
-    // it('assert Add button is disabled (input field empty)', () => {
-    //     // Check state of Add button
-    //     cy.get('input[type=submit][value=Add]')
-    //         .should('be.disabled')
-    //     // .should('be.enabled')
-    // })
-
-    it('assert new todo item added when Add button clicked (input field populated)', () => {
+    it('assert new todo item is cretad when discrpition is filled and "Add" is pressed', () => {
         // Populate input field
         cy.get('ul.todo-list')
             .find('input[type=text]')
-            .type('test')
+            .type('test 1')
 
         // Click Add button
         cy.get('input[type=submit][value=Add]')
             .click()
 
         // Assert todo list contains text of newly added item
-        cy.get('ul.todo-list').should('contain.text', 'test')
+        cy.get('ul.todo-list').should('contain.text', 'test 1')
     })
 
-    it('ative done', () => {
-        //click the first unchecked item
-        cy.get('ul.todo-list')
-            .get('.unchecked')
-            .first()
+    it('assert done todo item set to active when clicked', () => {
+        //check that the chosen item is unchecked
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.unchecked')
+
+        // Click checker span of newly created item
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.checker')
             .click()
-        //the same item is now supposed to be checked
-        cy.get('ul.todo-list')
-            .get('.checked')
+
+        // Check that description span has line-through css property
+        cy.get('li.todo-item').contains('test 1')
+            .invoke('css', 'text-decoration')
+            .should('contain', 'line-through')
     })
 
-    it('done active', () => {
-        //click the first checked item
-        cy.get('ul.todo-list')
-            .get('.checked')
-            .first()
+    it('assert active todo item set to done when clicked', () => {
+        //check that the chosen item is checked
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.checked')
+
+        // Click checker span of newly created item
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.checker')
             .click()
-        //the same item is now supposed to be unchecked
-        cy.get('ul.todo-list')
-            .get('.unchecked')
+
+        //check that the chosen item is unchecked
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.unchecked')
     })
 
     it('use x button to remove task', () => {
-        cy.get('ul.todo-list')
-            .get('.remover')
-            .first()
+        //check that there are the right amount of todo items
+        cy.get('li.todo-item')
+            .should('have.length', 2)
+
+        // Click remover span of test 1 to remove it
+        cy.get('li.todo-item')
+            .contains('test 1')
+            .parent('li')
+            .find('span.remover')
             .click()
+
+        //one item should remain
+        cy.get('li.todo-item')
+            .should('have.length', 1)
     })
 
     after(function () {
@@ -133,5 +159,4 @@ describe('Adding and editing todo items', () => {
             cy.log(response.body)
         })
     })
-
 })
