@@ -6,8 +6,10 @@ describe('Todo', () => {
     // define variables that we need on multiple occasions
     let uid // user id
     let email // email of the user
+    let taskid
 
-    beforeEach(function () {
+    // beforeEach(function () {
+    before(function () {
         // create a fabricated user from a fixture
         cy.fixture('user.json')
         .then((user) => {
@@ -20,35 +22,38 @@ describe('Todo', () => {
             .then((response) => {
                 uid = response.body._id.$oid
                 email = user.email
-
-                cy.request({
-                    method: 'POST',
-                    url: `${backend_url}/tasks/create`,
-                    form: true,
-                    body: {
-                    'title': "My first task",
-                    'description': "Test description",
-                    'userid': uid,
-                    'url': 'testurl',
-                    'todos': "My first todo" // inte helt säker på varför det måste vara string här, men det verkar funka (kollat mot databas) och array funkar inte
-                    }
-                })
-                .then((response) => {
-                    cy.log('my resonsebody', response.body)
-                    cy.visit('/')
-                    // login
-                    cy.contains('div', 'Email Address')
-                        .find('input[type=text]')
-                        .type(email)
-                    cy.get('form')
-                    .submit()
-                    // click on task for detailed view
-                    cy.get('.container')
-                    .contains('.title-overlay', 'My first task')
-                    .parents('a')
-                    .click()
-                })
             })
+        })
+    })
+    beforeEach(function () {
+
+        cy.request({
+            method: 'POST',
+            url: `${backend_url}/tasks/create`,
+            form: true,
+            body: {
+            'title': "My first task",
+            'description': "Test description",
+            'userid': uid,
+            'url': 'testurl',
+            'todos': "My first todo" // inte helt säker på varför det måste vara string här, men det verkar funka (kollat mot databas) och array funkar inte
+            }
+        })
+        .then((response) => {
+            taskid = response.body[0]._id.$oid
+            cy.log('my resonsebody', response.body)
+            cy.visit('/')
+            // login
+            cy.contains('div', 'Email Address')
+                .find('input[type=text]')
+                .type(email)
+            cy.get('form')
+            .submit()
+            // click on task for detailed view
+            cy.get('.container')
+            .contains('.title-overlay', 'My first task')
+            .parents('a')
+            .click()
         })
     })
 
@@ -135,8 +140,13 @@ describe('Todo', () => {
             cy.wait(20000).contains('.todo-item .editable', firstTodoDescr).should('not.exist')
         })
     })
-
-    afterEach(function () {
+    afterEach(function() {
+        cy.request({
+            method: 'DELETE',
+            url: `${backend_url}/tasks/byid/${taskid}`
+        })
+    })
+    after(function () {
         // clean up by deleting the user 
         // and associated tasks and todos from the database
         cy.request({
