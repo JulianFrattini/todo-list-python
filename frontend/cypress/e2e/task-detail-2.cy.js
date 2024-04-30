@@ -139,7 +139,7 @@ describe('Adding and editing todo items', () => {
         cy.get('input[type=submit][value=Add]')
             .click()
 
-        cy.wait(500)
+        cy.wait(5000)
 
         // Click remover span of newly created item
         cy.get('li.todo-item')
