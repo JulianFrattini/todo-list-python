@@ -26,7 +26,6 @@ describe('Todo', () => {
         })
     })
     beforeEach(function () {
-
         cy.request({
             method: 'POST',
             url: `${backend_url}/tasks/create`,
@@ -97,27 +96,94 @@ describe('Todo', () => {
         .find('.editable')
         .should('have.text', secondTodoDescr)
     })
-
-    it('R8UC2 - Toggle todo item Active->Done->Active', () => {
+    // it('R8UC2 - Toggle todo item Active->Done->Active', () => {
+    //     cy.contains('.todo-item', 'My first todo')
+    //         .find('.checker')
+    //         .should('not.have.class', 'checked')
+    //         .and('have.class', 'unchecked') // assert that todo is initially active
+    //         .click() // click the icon
+    //         .should('not.have.class', 'unchecked')
+    //         .and('have.class', 'checked') // assert that todo is done after the click
+    //         .parents('.todo-item')
+    //         .find('.editable')
+    //         .should('have.css', 'text-decoration-line', 'line-through') // assert that the done todo is strike through
+    //         .parents('.todo-item')
+    //         .find('.checker', '.checked')
+    //         .click() // click the icon again
+    //         // .wait(5000) // uncomment the wait time if the test is not passing, sometimes it takes longer time
+    //         .should('not.have.class', 'checked')
+    //         .and('have.class', 'unchecked') // assert that todo is now active again
+    //         .parents('.todo-item')
+    //         .find('.editable')
+    //         .should('not.have.css', 'text-decoration-line', 'line-through') // assert that todo is no longer strike-through
+    // })
+    it('R8UC2 - Toggle todo item Active->Done, description should become strikethorugh', () => {
+        // get the created todo-item from backend
+        
         cy.contains('.todo-item', 'My first todo')
+            .find('.editable')
+            .should('not.have.css', 'text-decoration-line', 'line-through')
+            .parents('.todo-item')
             .find('.checker')
             .should('not.have.class', 'checked')
-            .and('have.class', 'unchecked') // assert that todo is initially active
+            .and('have.class', 'unchecked') // assert that todo is initially active and not strike-through
             .click() // click the icon
             .should('not.have.class', 'unchecked')
             .and('have.class', 'checked') // assert that todo is done after the click
             .parents('.todo-item')
             .find('.editable')
             .should('have.css', 'text-decoration-line', 'line-through') // assert that the done todo is strike through
-            .parents('.todo-item')
-            .find('.checker', '.checked')
-            .click() // click the icon again
-            // .wait(5000) // uncomment the wait time if the test is not passing, sometimes it takes longer time
-            .should('not.have.class', 'checked')
-            .and('have.class', 'unchecked') // assert that todo is now active again
-            .parents('.todo-item')
-            .find('.editable')
-            .should('not.have.css', 'text-decoration-line', 'line-through') // assert that todo is no longer strike-through
+    })
+
+    it('R8UC2 - Toggle todo item Done->Active, description should not be strike through', () => {
+        // get the created todo-item from backend
+        cy.request({
+            method: 'GET',
+            url: `${backend_url}/tasks/byid/${taskid}`
+        }).then((response) => {
+            const todo = response.body.todos[0]
+            const todoid = todo._id.$oid
+            const updateTodo = {
+                'data': `{'$set': {'done': true}}`
+            }
+            cy.request({
+                method: 'PUT',
+                url: `${backend_url}/todos/byid/${todoid}`,
+                form: true,
+                body: updateTodo
+            }).then(() => {
+                cy.visit('/')
+                // login
+                cy.contains('div', 'Email Address')
+                    .find('input[type=text]')
+                    .type(email)
+                cy.get('form')
+                .submit()
+                // click on task for detailed view
+                cy.get('.container')
+                .contains('.title-overlay', 'My first task')
+                .parents('a')
+                .click()
+            }).then(() => {
+                cy.contains('.todo-item', 'My first todo')
+                .find('.editable')
+                .should('have.css', 'text-decoration-line', 'line-through') // assert that the done todo is initially strike through
+                .parents('.todo-item')
+                .find('.checker', '.checked')
+                .should('not.have.class', 'unchecked')
+                .and('have.class', 'checked') // checked that todo is initially done
+                .click() // click the icon again
+                // .wait(5000) // uncomment the wait time if the test is not passing, sometimes it takes longer time
+                .should('not.have.class', 'checked')
+                .and('have.class', 'unchecked') // assert that todo is now active again
+                .parents('.todo-item')
+                .find('.editable')
+                .should('not.have.css', 'text-decoration-line', 'line-through') // assert that todo is no longer strike-through
+            })
+        })
+
+
+
     })
 
     it('R8UC3 - When the x symbol behind a task is clicked the task should be removed from the list', () => {
