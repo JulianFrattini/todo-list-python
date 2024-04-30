@@ -70,7 +70,7 @@ describe('Todo', () => {
         //     .find('.editable')
         //     .should('have.text', 'My first todo')
         // })
-    
+
         it('R8UC1 - Add button should be disabled if description is not entered', () => {
             cy.get('.todo-list')
             .find('.inline-form')
@@ -79,7 +79,7 @@ describe('Todo', () => {
             .get('.inline-form input[value="Add"]')
             .should('be.disabled')
         })
-    
+
         it('R8UC1 - Add button should not be disabled if description is entered', () => {
             cy.get('.todo-list')
             .find('.inline-form')
@@ -88,10 +88,10 @@ describe('Todo', () => {
             .get('.inline-form input[value="Add"]')
             .should('not.be.disabled')
         })
-    
+
         it('R8UC1 - When a task has been added it should appear last on the list', () => {
             const secondTodoDescr = "This is my second todo"
-    
+
             cy.get('.todo-list')
             .find('.inline-form')
             .find('input[type=text]')
@@ -103,10 +103,8 @@ describe('Todo', () => {
             .find('.editable')
             .should('have.text', secondTodoDescr)
         })
-    
+
         it('R8UC2 - Toggle todo item Active->Done, description should become strikethorugh', () => {
-            // get the created todo-item from backend
-            
             cy.contains('.todo-item', 'My first todo')
                 .find('.editable')
                 .should('not.have.css', 'text-decoration-line', 'line-through')
@@ -124,13 +122,14 @@ describe('Todo', () => {
 
         it('R8UC3 - When the x symbol behind a task is clicked the task should be removed from the list', () => {
             cy.intercept('DELETE', `**/todos/byid/*`).as('deleteTodo')
-    
+
             const firstTodoDescr = "My first todo"
+
             cy.contains('.todo-item .editable', firstTodoDescr)
             .parents('.todo-item')
             .find('.remover')
             .click()
-    
+
             cy.wait('@deleteTodo').then((interception) => {
                 // first one is not technically an assert, 
                 // but to make sure that the request to
@@ -138,7 +137,7 @@ describe('Todo', () => {
                 // before asserting if the item has been 
                 // removed from the view
                 assert.equal(interception.response.statusCode, 200)
-    
+
                 cy.wait(20000).contains('.todo-item .editable', firstTodoDescr).should('not.exist')
             })
         })
@@ -166,6 +165,7 @@ describe('Todo', () => {
                 })
             })
         })
+
         it('R8UC2 - Toggle todo item Done->Active, description should not be strike through', () => {
             cy.contains('.todo-item', 'My first todo')
             .find('.editable')
@@ -192,6 +192,7 @@ describe('Todo', () => {
             url: `${backend_url}/tasks/byid/${taskid}`
         })
     })
+
     after(function () {
         // clean up by deleting the user 
         // and associated tasks and todos from the database
