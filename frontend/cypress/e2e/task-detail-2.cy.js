@@ -36,11 +36,11 @@ describe('Adding and editing todo items', () => {
 
                 taskTitle = task.title
             })
-
-        cy.viewport(1024, 768)
     })
   
     beforeEach(function () {
+        // cy.viewport(1024 * 2, 768 * 2)
+
         // Login and go to task overview
         cy.visit('http://localhost:3000')
 
@@ -56,36 +56,11 @@ describe('Adding and editing todo items', () => {
             .click()
     })
 
-    /* Unnecessary tests?
-    it('assert Add button is enabled (input field populated)', () => {
-        // Populate input field
-        cy.get('ul.todo-list')
-            .find('input[type=text]')
-            .type('test')
-
-        // Check state of Add button
-        cy.get('input[type=submit][value=Add]')
-            .should('be.enabled')
-    })
-
-    it('assert new todo item not added when Add button clicked (input field empty)', () => {
-        // Click Add button
-        cy.get('input[type=submit][value=Add]')
-            .click()
-
-        // Assert length of todo list is not greater than default (2)
-        cy.get('ul.todo-list')
-            .find('li')
-            .should('have.length', 2)
-            // .should('have.length', 3)
-    })
-    */
-
     it('assert Add button is disabled (input field empty)', () => {
         // Check state of Add button
         cy.get('input[type=submit][value=Add]')
-            // .should('be.disabled')
-            .should('be.enabled')
+            .should('be.disabled')
+            // .should('be.enabled')
     })
 
     it('assert new todo item added when Add button clicked (input field populated)', () => {
@@ -111,6 +86,9 @@ describe('Adding and editing todo items', () => {
         cy.get('input[type=submit][value=Add]')
             .click()
 
+        // Let Cypress rest a little
+        cy.wait(500)
+
         // Click checker span of newly created item
         cy.get('li.todo-item')
             .contains('test 2')
@@ -118,10 +96,61 @@ describe('Adding and editing todo items', () => {
             .find('span.checker')
             .click()
 
-        // Check that description span has line-through css property
+        // Assert span's text-decoration-line is set to line-through
         cy.get('li.todo-item').contains('test 2')
-            .invoke('css', 'text-decoration')
-            .should('contain', 'line-through')
+            .should('have.css', 'text-decoration-line', 'line-through')
+    })
+
+    it('assert done todo item set to active when clicked', () => {
+        // Create a new todo item
+        cy.get('ul.todo-list')
+            .find('input[type=text]')
+            .type('test 3')
+
+        cy.get('input[type=submit][value=Add]')
+            .click()
+
+        // Click checker span of newly created item twice
+        cy.get('li.todo-item')
+            .contains('test 3')
+            .parent('li')
+            .find('span.checker')
+            .click()
+
+        cy.wait(500)
+
+        cy.get('li.todo-item')
+            .contains('test 3')
+            .parent('li')
+            .find('span.checker')
+            .click()
+        
+        // Assert span's text-decoration-line is not set to line-through
+        cy.get('li.todo-item').contains('test 3')
+            .should('not.have.css', 'text-decoration-line', 'line-through')
+    })
+
+    it('assert todo item removed when its x symbol clicked', () => {
+        // Create a new todo item
+        cy.get('ul.todo-list')
+            .find('input[type=text]')
+            .type('test 4')
+
+        cy.get('input[type=submit][value=Add]')
+            .click()
+
+        cy.wait(500)
+
+        // Click remover span of newly created item
+        cy.get('li.todo-item')
+            .contains('test 4')
+            .parent('li')
+            .find('span.remover')
+            .click()
+
+        // Assert todo list does not contain removed item
+        cy.get('li.todo-item')
+            .should('not.contain', 'test 4')
     })
 
     after(function () {
@@ -135,3 +164,28 @@ describe('Adding and editing todo items', () => {
     })
 
 })
+
+/* Unnecessary tests?
+    it('assert Add button is enabled (input field populated)', () => {
+        // Populate input field
+        cy.get('ul.todo-list')
+            .find('input[type=text]')
+            .type('test')
+
+        // Check state of Add button
+        cy.get('input[type=submit][value=Add]')
+            .should('be.enabled')
+    })
+
+    it('assert new todo item not added when Add button clicked (input field empty)', () => {
+        // Click Add button
+        cy.get('input[type=submit][value=Add]')
+            .click()
+
+        // Assert length of todo list is not greater than default (2)
+        cy.get('ul.todo-list')
+            .find('li')
+            .should('have.length', 2)
+            // .should('have.length', 3)
+    })
+*/
