@@ -34,6 +34,6 @@ jobs:
       # Execute unit tests
       - name: unit tests
         run: |
-          python m.pytest -m unit
+          python -m pytest -m unit
 
 
