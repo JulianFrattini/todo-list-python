@@ -4,7 +4,7 @@ name: Pytest
 on:
   # trigger 1: pushing to the develop branch
   push:
-    branches: [ "develop" ]
+    branches: [ "master" ]
   # trigger 2: opening a pull request to the master branch
   pull_request:
     branches: [ "master" ]
