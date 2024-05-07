@@ -2,10 +2,10 @@
 name: Pytest
 
 on:
-  # trigger 1: pushing to the main branch
+  # trigger 1: pushing to the develop branch
   push:
     branches: [ "develop" ]
-  # trigger 2: opening a pull request to the main branch
+  # trigger 2: opening a pull request to the master branch
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
 
     steps:
       # Checkout the code onto the runner
-      - uses: action/checkout@v3
+      - uses: actions/checkout@v3
       # Setup Python on the runner
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install r requirements.pip
+          pip install -r requirements.pip
       # Execute unit tests
       - name: unit tests
         run: |
