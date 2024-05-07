@@ -4,10 +4,10 @@ name: Pytest
 on:
   # trigger 1: pushing to the main branch
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
   # trigger 2: opening a pull request to the main branch
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 # the job and the contained steps will be executed whenever a trigger occurs
