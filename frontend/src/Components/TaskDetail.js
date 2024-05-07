@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import './../Styles/TaskDetail.css'
+import React, { useEffect, useState } from 'react';
+import './../Styles/TaskDetail.css';
 
 import Editable from './Editable';
 
-import Converter from './../Util/Converter'
+import Converter from './../Util/Converter';
 
-function TaskDetail({ taskid, updateTasks }) {
+function TaskDetail({ taskid, updateTasks })
+{
     const [task, setTask] = useState(null);
     const [todos, setTodos] = useState([]);
     const [todo, setTodo] = useState("");
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         updateTask();
     }, []);
 
     /**
      * Re-fetch the current task from the server once more
      */
-    const updateTask = () => {
+    const updateTask = () =>
+    {
         fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/tasks/byid/${taskid}`, {
             method: 'get',
             headers: { 'Cache-Control': 'no-cache' }
         })
             .then(res => res.json())
-            .then(tobj => {
+            .then(tobj =>
+            {
                 let converted = Converter.convertTask(tobj);
                 setTask(converted);
                 setTodos(converted.todos);
             })
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.error(error)
             });
     }
@@ -37,7 +42,8 @@ function TaskDetail({ taskid, updateTasks }) {
      * Add a todo item to the list
      * @param {*} e Event from the form submit
      */
-    const addTodo = (e) => {
+    const addTodo = (e) =>
+    {
         e.preventDefault();
 
         const data = new URLSearchParams();
@@ -52,11 +58,12 @@ function TaskDetail({ taskid, updateTasks }) {
             .then(res => res.json())
             .then(todoobj => updateTask())
             .then(updateTasks())
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.error(error)
             });
 
-        
+
         setTodo("");
     }
 
@@ -64,7 +71,8 @@ function TaskDetail({ taskid, updateTasks }) {
      * Toggle the "done" status of a given todo object
      * @param {*} todo Todo object which is toggled
      */
-    const toggleTodo = (todo) => {
+    const toggleTodo = (todo) =>
+    {
         const data = new URLSearchParams();
         data.append('data', `{'$set': {'done': ${!todo.done}}}`);
 
@@ -76,7 +84,8 @@ function TaskDetail({ taskid, updateTasks }) {
             .then(res => res.json())
             .then(updateTask())
             .then(updateTasks())
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.error(error)
             });
 
@@ -86,15 +95,17 @@ function TaskDetail({ taskid, updateTasks }) {
      * Delete an existing todo object
      * @param {*} todo Todo object which is deleted
      */
-    const deleteTodo = (todo) => {
-        fetch(`http://localhost:5000/todos/byid/${todo._id}`, {
+    const deleteTodo = (todo) =>
+    {
+        fetch(`http://localhost:5002/todos/byid/${todo._id}`, {
             method: 'delete',
             headers: { 'Cache-Control': 'no-cache' }
         })
             .then(res => res.json())
             .then(updateTask())
             .then(updateTasks())
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.error(error)
             });
 
