@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        cd backend/
+      working-directory: ./backend
         pip install -r requirements.pip
 
     - name: Unit Tests
