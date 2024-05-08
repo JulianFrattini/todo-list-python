@@ -52,34 +52,3 @@ def test_email_throws_exception():
 
 
 
-# name: Pytest
-
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#   workflow_dispatch:
-
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - uses: actions/checkout@v3
-
-#       - name: Set up Python 3.10
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: '3.10'
-#           cache: 'pip'
-#           cache-dependency-path: '**/requirements.pip'
-
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -r backend/requirements.pip
-
-#       - name: Unit Tests
-#         run: |
-#           python -m pytest -m unit
