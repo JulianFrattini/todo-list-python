@@ -49,3 +49,37 @@ def test_email_throws_exception():
     with pytest.raises(Exception) as exception_info:
         user_controller.get_user_by_email(test_email)
     assert str(exception_info.value) == "Failed to query database."
+
+
+
+# name: Pytest
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   workflow_dispatch:
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Set up Python 3.10
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+#           cache: 'pip'
+#           cache-dependency-path: '**/requirements.pip'
+
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r backend/requirements.pip
+
+#       - name: Unit Tests
+#         run: |
+#           python -m pytest -m unit
