@@ -5,22 +5,15 @@ on:
   pull_request:
     branches: [ "master" ]
 
-jobs:
-  
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Build image & run the databse and backend
-  #     run: docker compose up -d mongodb backend
-      
+jobs:   
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
     steps:
+    - name: Set up the database and backend
+      run: docker compose up -d mongodb backend
     - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
@@ -28,8 +21,10 @@ jobs:
         cahe: 'pip'
     - name: Install dependencies
       run: |
+      working-directory: ./backend
         python -m pip install --upgrade pip
         pip install -r requirements.pip 
     - name: Unit tests
+      working-directory: ./backend
       run: |
         python -m pytest -m unit
