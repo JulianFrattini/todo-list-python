@@ -1,4 +1,4 @@
-# Edutask: a Training System for PA1417
+# Edutask: a Training System for PA141 7
 
 [![GitHub](https://img.shields.io/github/license/JulianFrattini/edutask)](./LICENSE)
 
@@ -10,6 +10,14 @@ Please keep the following in mind:
 
 * The system contains intended flaws, which are to be identified applying test techniques.
 * The system is a work-in-progress, meaning that some functionalities are not yet implemented. Focus on the functionalities that already exist, everything else can be disregarded for now.
+
+## Group 15
+
+Lab assignments on the *System Verification* course at Blekinge Tekniska Högskola must be completed in pairs. This is the lab repo for **Group 15**.
+
+Group 15 includes:
+- [Zachary Richard Mooney](https://github.com/Mooney91)
+- [Olha Bruce](https://github.com/olbr22)
 
 ## Setup
 
