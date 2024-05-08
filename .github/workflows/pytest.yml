@@ -1,5 +1,4 @@
-name: Unit tests
-
+name: Pytest
 on:
   push:
     branches: [ "master" ]
@@ -7,10 +6,30 @@ on:
     branches: [ "master" ]
 
 jobs:
-
+  
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build & rund the Docker image
-      run: docker compose up -d mongodb backend 
+
+    - name: Build image & run the databse and backend
+      run: docker compose up -d mongodb backend
+      
+  test:
+    runs-on: ubuntu-latest
+    steps:
+  
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+        cahe: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Unit tests
+      run: |
+        python -m pytest -m unit
