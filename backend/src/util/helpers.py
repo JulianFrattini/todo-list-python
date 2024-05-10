@@ -1,6 +1,7 @@
 from src.controllers.usercontroller import UserController
 from src.util.dao import DAO
 import random
+import re
 
 def hasAttribute(obj: dict, attribute: str):
     """Check whether a given dict contains a specific attribute
@@ -15,6 +16,9 @@ def hasAttribute(obj: dict, attribute: str):
     """
     return (attribute in obj)
 
+
+
+    return True
 class ValidationHelper:
     def __init__(self, usercontroller: UserController):
         self.usercontroller = usercontroller
@@ -37,6 +41,9 @@ class ValidationHelper:
         if user['age'] > 18:
             return "valid"
         return "underaged"
+    
+
+            
 
 class ValidationHelper2:
     def __init__(self):
