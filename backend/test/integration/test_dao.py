@@ -1,10 +1,22 @@
 import pytest
 from src.util.dao import DAO
-from bson.objectid import ObjectId
+import json
+import os
+
+collection_name = 'test_todo'
+validators_path = 'src/static/validators'
 
 @pytest.fixture
 def dao():
-    dao = DAO('todo')
+    # Load the data from todo.json
+    with open(os.path.join(validators_path, 'todo.json'), 'r') as f:
+        data = json.load(f)
+
+    # Write the data to test_todo.json
+    with open(os.path.join(validators_path, f'{collection_name}.json'), 'w') as f:
+        json.dump(data, f)
+
+    dao = DAO(collection_name) # Create a separate collection for testing
     yield dao
     dao.drop()
 
