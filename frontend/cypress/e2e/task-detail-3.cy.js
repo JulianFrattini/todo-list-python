@@ -141,14 +141,16 @@ describe('Adding and editing todo items', () => {
     })
 
     it('assert todo item removed when its x symbol clicked', () => {
+        cy.wait(5000)
+
         // Click remover span of newly created item
         cy.get('li.todo-item')
-            .contains('Task')
+            // .contains('Task')
+            .contains('Test')
             .parent('li')
             .find('span.remover')
             .click()
 
-        cy.wait(4000)
         // Assert todo list does not contain removed item
         cy.get('li.todo-item')
             .should('not.contain', 'Test')
