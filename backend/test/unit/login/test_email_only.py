@@ -91,16 +91,19 @@ def test_get_user_invalid_email():
     """ Test that providing an invalid email address raises a ValueError. """
 
     mocked_dao = mock.MagicMock()
-    mocked_dao.find.return_value = [
-        {
-            "_id": {
-                "$oid": "6615a3bca483a805520a9b44"
-            },
-            "email": "micke@bth.se",
-            "firstName": "mikael",
-            "lastName": "svensson"
-        }
-    ]
+
+    # mocked_dao.find.return_value = [
+    #     {
+    #         "_id": {
+    #             "$oid": "6615a3bca483a805520a9b44"
+    #         },
+    #         "email": "micke@bth.se",
+    #         "firstName": "mikael",
+    #         "lastName": "svensson"
+    #     }
+    # ]
+
+    mocked_dao.find.return_value = None
 
     sut = UserController(dao=mocked_dao)
 
