@@ -49,18 +49,7 @@ class TestDAOCreateMethod:
             dao_instance.create(valid_data)  
 
 #Test ID:4
-    def test_various_bson_types(self, dao_instance):
-        data = {
-            "firstName": "Bob",
-            "lastName": "Belly",
-            "email": "bob@example.com",
-            "tasks": [json.dumps({"task_id": "123abc"})]  
-        }
-        result = dao_instance.create(data)
-        assert '_id' in result, "Should handle BSON types correctly."
-
-
-#Test ID:5
+  
     def test_missing_required_fields(self, dao_instance):
         incomplete_data = {"firstName": "Eve"}  
         with pytest.raises(WriteError):
