@@ -43,6 +43,6 @@ def test_not_exists():
 def test_database_fail():
     with pytest.raises(Exception) as e:
         mockedDao = mock.MagicMock()
-        mockedDao.side_effect = Exception()
+        mockedDao.find.side_effect = Exception()
         user_controller = UserController(mockedDao)
-        user_controller.get_user_by_email("hello@gmail.com")
+        user_controller.get_user_by_email("hellohello@gmail.com")
