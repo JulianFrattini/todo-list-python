@@ -1,0 +1,8 @@
+Name
+Eric Samuelsson
+
+Group number
+XX
+
+Link to the edutask repository
+https://github.com/ersamu/edutask
